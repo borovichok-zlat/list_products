@@ -5,6 +5,7 @@ import Leftsidebar from "./components/leftsidebar.js";
 import Table from "./components/table.js";
 import './styles/index.css';
 
+//lalalal
 
 let list = [
     {id: 1, topSection: "мясо", subsection: ["курица", "говядина", "свинина", "индейка"]},
