@@ -2,10 +2,22 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 
+/*
 class Item extends React.Component {
     render() {
         return (
             <li>{this.props.name}</li>
+        );
+    }
+}
+*/
+class Item extends React.Component {
+    render() {
+        return (
+            <details>
+                <summary>{this.props.name}</summary>
+                <p>If your browser supports this element, it should allow you to expand and collapse these details.</p>
+            </details>
         );
     }
 }

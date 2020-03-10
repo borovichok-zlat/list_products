@@ -6,7 +6,7 @@ class Topbar extends React.Component {
     render() {
         return (
             <section className="topbar">
-              <p>Меню списка продуктов</p>
+              <p>Меню списка покупок</p>
             </section>
         );
     }
