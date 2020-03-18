@@ -154,3 +154,13 @@ details[open] summary::before {
 p {
     font-size: .8em;
 }
+
+
+/*checkbox*/
+label {
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input {
+    margin: .4rem;
+}

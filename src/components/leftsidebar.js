@@ -2,21 +2,42 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 
-/*
-class Item extends React.Component {
+class CheckBox extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {isSelected: false};
+        
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+    
+    handleInputChange(event) {
+        const target = event.target;
+        
+        this.setState({isSelected: target.checked});
+    }
+    
     render() {
         return (
-            <li>{this.props.name}</li>
+            <div>
+              <input type="checkbox" name="selectedProduct" checked={this.state.isSelected} onChange={this.handleInputChange} />
+              <label>{this.props.name}</label>
+            </div>
         );
     }
 }
-*/
+
 class Item extends React.Component {
     render() {
+        const subsection = this.props.subsection;
         return (
             <details>
                 <summary>{this.props.name}</summary>
-                <p>If your browser supports this element, it should allow you to expand and collapse these details.</p>
+                {
+                    subsection.map((product) => 
+                        <CheckBox key={product} name={product} />
+                    )
+                }
             </details>
         );
     }
@@ -31,7 +52,7 @@ class Leftsidebar extends React.Component {
               <ul>
                 {
                     data.map((products) => 
-                        <Item key={products.id} name={products.topSection} />
+                        <Item key={products.id} name={products.topSection} subsection={products.subsection} />
                     )
                 }
               </ul>
