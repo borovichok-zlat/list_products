@@ -50,10 +50,7 @@ body {
   background-color: cyan;
 }
 
-.bar {
-    display: block;
-}
-
+/*----------------------------------*/
 .topbar{
   height: 10%;
   background: #ddd;
@@ -63,16 +60,15 @@ body {
   padding-bottom: 20px;    
 }
 
+/*----------------------------------*/
 .sidebar_left{
   overflow-y: auto;
- /* min-width: 150px; */
   width: 20%;    
   position: fixed;
   height: 90%;
- /* float: left; */
   background: #f0f0f0;
-  border-right: 1px #aaa solid;
-  padding-right: 20px;
+  border-right: 3px #aaa solid;
+  padding-right: 30px; 
   padding-left: 30px;    
 }
 .sidebar_left h1{
@@ -81,31 +77,6 @@ body {
 .sidebar_left ul{
   list-style: square;
 }
-
-.main {
-    left: 20%; 
-    height: 90%;
-    position: fixed;
-    padding-left: 60px;
-    padding-top: 5px;
-}
-
-.table {
-    border: 2px solid #9799a7;
-    border-collapse: collapse;
-    background-color: bisque;
-}
-.table td {
-    border: 2px solid #9799a7;
-}
-.table th {
-    border: 2px solid #9799a7;
-}
-
-.table caption {
-    border: 2px solid #9799a7;
-}
-
 
 /* accordeon */
 details {
@@ -155,7 +126,6 @@ p {
     font-size: .8em;
 }
 
-
 /*checkbox*/
 label {
     font: 1rem 'Fira Sans', sans-serif;
@@ -164,3 +134,30 @@ label {
 input {
     margin: .4rem;
 }
+
+/*----------------------------------*/
+.main {
+    left: 30%; 
+    height: 90%;
+    position: fixed;
+    padding: 10px;
+    border: 2px solid #9799a7;
+}
+
+.table {
+    border: 2px solid #9799a7;
+    border-collapse: collapse;
+    background-color: bisque;
+}
+.table td {
+    border: 2px solid #9799a7;
+}
+.table th {
+    border: 2px solid #9799a7;
+}
+
+.table caption {
+    border: 2px solid #9799a7;
+}
+
+/*----------------------------------*/
