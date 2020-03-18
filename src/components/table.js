@@ -9,7 +9,7 @@ class Tabel extends React.Component {
               <table className="table">
                <caption>Таблица размеров обуви</caption>
                 <tbody>
-                    <tr>
+                   <tr>
                     <th>Россия</th>
                     <th>Великобритания</th>
                     <th>Европа</th>
@@ -35,7 +35,7 @@ class Tabel extends React.Component {
                    <tr><td>46</td><td>12</td><td>47⅓</td><td>30</td></tr>
                    <tr><td>46,5</td><td>12,5</td><td>48</td><td>30,5</td></tr>
                    <tr><td>47</td><td>13</td><td>48⅔</td><td>31</td></tr>
-                    <tr><td>48</td><td>13,5</td><td>49⅓</td><td>31,5</td></tr>
+                   <tr><td>48</td><td>13,5</td><td>49⅓</td><td>31,5</td></tr>
                   </tbody>  
               </table>  
             </section>
