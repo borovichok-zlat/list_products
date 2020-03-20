@@ -2,6 +2,39 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 
+class Input extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {value: ''};
+        
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+    
+    handleSubmit(event) {
+        if (this.props.name === 'newTopSection') {
+            alert("новый раздел:" + this.state.value);
+        } else {
+            alert("новый продукт:" + this.state.value);
+        }
+        event.preventDefault();
+    }
+    
+    render() {
+        return (
+            <form onSubmit={this.handleSubmit}>
+                <input type="text" placeholder={this.props.placeholder} onChange={this.handleChange}/>
+                <input type="submit" value="сохранить" />    
+            </form>
+        );
+    }
+}
+
 class CheckBox extends React.Component {
     constructor(props) {
         super(props);
@@ -27,7 +60,7 @@ class CheckBox extends React.Component {
     }
 }
 
-class Item extends React.Component {
+class List extends React.Component {
     render() {
         const subsection = this.props.subsection;
         return (
@@ -38,6 +71,7 @@ class Item extends React.Component {
                         <CheckBox key={product} name={product} />
                     )
                 }
+                <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
             </details>
         );
     }
@@ -48,13 +82,16 @@ class Leftsidebar extends React.Component {
        const data = this.props.data;
        return (
             <section className="sidebar_left">
-                <h1>Sprites</h1>
               <ul>
                 {
                     data.map((products) => 
-                        <Item key={products.id} name={products.topSection} subsection={products.subsection} />
+                        <List key={products.id} name={products.topSection} subsection={products.subsection} />
                     )
                 }
+                <details>
+                    <summary>добавить новый раздел</summary>
+                    <Input key={'newTopSection'} name={'newTopSection'} placeholder={'Введите название раздела'}/>
+                </details>  
               </ul>
             </section>
         );
