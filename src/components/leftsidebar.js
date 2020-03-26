@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 
+//---- добавление нового раздела или продукта ----//
 class Input extends React.Component {
     constructor(props) {
         super(props);
@@ -35,6 +36,8 @@ class Input extends React.Component {
     }
 }
 
+
+//---- чекбоксы для выбора продуктов ----//
 class CheckBox extends React.Component {
     constructor(props) {
         super(props);
@@ -60,6 +63,8 @@ class CheckBox extends React.Component {
     }
 }
 
+
+//---- разделы с продуктами ----//
 class List extends React.Component {
     render() {
         const subsection = this.props.subsection;
@@ -77,6 +82,8 @@ class List extends React.Component {
     }
 }
 
+
+//---- левое меню ----//
 class Leftsidebar extends React.Component {   
     render() {
        const data = this.props.data;
