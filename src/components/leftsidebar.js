@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
+import deleteIcon from '../styles/img/deletesweep24px.svg';
 
 //---- добавление нового раздела или продукта ----//
 class Input extends React.Component {
@@ -42,9 +43,10 @@ class CheckBox extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {isSelected: false};
+        this.state = {isSelected: false, delete: null};
         
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     
     handleInputChange(event) {
@@ -53,11 +55,20 @@ class CheckBox extends React.Component {
         this.setState({isSelected: target.checked});
     }
     
+    handleClick(event) {
+        const target = event.target;
+        
+        this.setState({delete: target});
+        
+        alert('delete: ' + this.props.name);
+    }
+    
     render() {
         return (
-            <div>
+            <div className="borderDiv">
               <input type="checkbox" name="selectedProduct" checked={this.state.isSelected} onChange={this.handleInputChange} />
               <label>{this.props.name}</label>
+              <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button>      
             </div>
         );
     }
@@ -66,11 +77,30 @@ class CheckBox extends React.Component {
 
 //---- разделы с продуктами ----//
 class List extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {delete: null};
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick(event) {
+        const target = event.target;
+        
+        this.setState({delete: target});
+        
+        alert('delete: ' + this.props.name);
+    }
+    
     render() {
         const subsection = this.props.subsection;
         return (
             <details>
-                <summary>{this.props.name}</summary>
+                <summary>
+                    {this.props.name} 
+                    <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button> 
+                </summary>
                 {
                     subsection.map((product) => 
                         <CheckBox key={product} name={product} />
