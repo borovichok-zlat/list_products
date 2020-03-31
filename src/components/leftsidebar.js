@@ -37,6 +37,31 @@ class Input extends React.Component {
     }
 }
 
+//---- кнопка удаления раздела или продукта ----//
+class ButtonDelete extends React.Component {
+    constructor(props) {
+        super(props);
+       
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick(event) {        
+        if (this.props.section === true) {
+            alert('delete section: ' + this.props.name);
+        } else {
+            alert('delete product: ' + this.props.name);
+        }
+        
+        event.preventDefault();
+    }
+    
+    render() {
+        return (
+            <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button>
+        );
+    }
+}
+
 
 //---- чекбоксы для выбора продуктов ----//
 class CheckBox extends React.Component {
@@ -46,7 +71,6 @@ class CheckBox extends React.Component {
         this.state = {isSelected: false, delete: null};
         
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleClick = this.handleClick.bind(this);
     }
     
     handleInputChange(event) {
@@ -55,42 +79,21 @@ class CheckBox extends React.Component {
         this.setState({isSelected: target.checked});
     }
     
-    handleClick(event) {
-        const target = event.target;
-        
-        this.setState({delete: target});
-        
-        alert('delete: ' + this.props.name);
-    }
-    
     render() {
         return (
             <div className="borderDiv">
               <input type="checkbox" name="selectedProduct" checked={this.state.isSelected} onChange={this.handleInputChange} />
               <label>{this.props.name}</label>
-              <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button>      
+              <ButtonDelete name={this.props.name} />   
             </div>
         );
     }
 }
 
-
 //---- разделы с продуктами ----//
 class List extends React.Component {
     constructor(props) {
         super(props);
-        
-        this.state = {delete: null};
-        
-        this.handleClick = this.handleClick.bind(this);
-    }
-    
-    handleClick(event) {
-        const target = event.target;
-        
-        this.setState({delete: target});
-        
-        alert('delete: ' + this.props.name);
     }
     
     render() {
@@ -99,7 +102,7 @@ class List extends React.Component {
             <details>
                 <summary>
                     {this.props.name} 
-                    <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button> 
+                    <ButtonDelete name={this.props.name} section={true}/>
                 </summary>
                 {
                     subsection.map((product) => 
@@ -111,7 +114,6 @@ class List extends React.Component {
         );
     }
 }
-
 
 //---- левое меню ----//
 class Leftsidebar extends React.Component {   
@@ -127,7 +129,7 @@ class Leftsidebar extends React.Component {
                 }
                 <details>
                     <summary>добавить новый раздел</summary>
-                    <Input key={'newTopSection'} name={'newTopSection'} placeholder={'Введите название раздела'}/>
+                    <Input name={'newTopSection'} placeholder={'Введите название раздела'}/>
                 </details>  
               </ul>
             </section>
