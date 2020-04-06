@@ -16,13 +16,39 @@ let list = [
 ];
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {selectedProduct: null, products: []};
+        
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+    
+    handleInputChange(product) { 
+        this.setState({selectedProduct: product});
+        
+        this.setState((state, props) => {
+            let flag = false;
+            for (let i = 0; i < state.products.length; i++) {
+                if (state.products[i] === product) {
+                    flag = true;
+                    break;
+                }          
+            }
+    
+            if (flag === false) {
+                return {products: [...state.products, product]}
+            }
+        });
+    }
+    
     render() {
         return (
             <div>    
                 <Topbar />
                 <section>    
-                    <Leftsidebar data={list}/>
-                    <Table /> 
+                    <Leftsidebar data={list} handleInputChange={this.handleInputChange}/>
+                    <Table products={this.state.products}/> 
                 </section>    
             </div>    
         );
