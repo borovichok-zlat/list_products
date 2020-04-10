@@ -3,17 +3,33 @@ import ReactDOM from "react-dom";
 import '../styles/index.css';
 import deleteIcon from '../styles/img/deletesweep24px.svg';
 
-//---- создание строки таблицы ----//
-function Columns(props) {
-    return (
-        <React.Fragment>
-            <tr><td>{props.name}</td><td></td><td></td><td></td></tr>
-        </React.Fragment>
-    )
-}
-
 //---- таблица покупок ----//
 class Tabel extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {amount: null, note: null};
+        
+        this.handleChangeAmount = this.handleChangeAmount.bind(this);
+        this.handleChangeNote = this.handleChangeNote.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleChangeAmount(event) {
+        
+        event.preventDefault();
+    }
+    
+    handleChangeNote(event) {
+        
+        event.preventDefault();
+    }
+    
+    handleClick(event) {
+        
+        event.preventDefault();
+    }
+    
     render() {
         const products = this.props.products;
         
@@ -22,10 +38,23 @@ class Tabel extends React.Component {
                 <table className="table">
                     <caption>Список покупок</caption>
                     <tbody>
-                        <tr><th>Продукт</th><th>Количество</th><th>Примечания</th><th>Удалить</th></tr>
+                        <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
                         {
                             products.map((product) => 
-                                <Columns key={product} name={product}/>
+                                <tr key={product}>
+                                    <td>{product}</td>
+                                    <td>
+                                        <input type="number" name={'amount'}/>
+                                    </td>
+                                    <td>
+                                        <input type="text" name={'note'}/>
+                                    </td>
+                                    <td>
+                                        <button>
+                                            <img src={deleteIcon} className="deleteIcon"/>
+                                        </button>
+                                    </td>
+                                </tr>
                             )
                         }
                     </tbody>  
@@ -34,5 +63,6 @@ class Tabel extends React.Component {
         );
     }
 }
+
 
 export default Tabel;
