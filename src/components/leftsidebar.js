@@ -77,7 +77,7 @@ class CheckBox extends React.Component {
         const target = event.target;
         
         this.setState({isSelected: target.checked});
-        this.props.handleInputChange(target.id);
+        this.props.handleInputChange(target.id, target.checked);
     }
     
     render() {
@@ -108,7 +108,8 @@ class List extends React.Component {
                 </summary>
                 {
                     subsection.map((product) => 
-                        <CheckBox key={product} name={product} handleInputChange={this.props.handleInputChange}/>
+                        <CheckBox key={product} name={product} handleInputChange={this.props.handleInputChange} 
+                                    isSelected={this.props.isSelected}/>
                     )
                 }
                 <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
@@ -127,7 +128,7 @@ class Leftsidebar extends React.Component {
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.topSection} subsection={products.subsection} 
-                              handleInputChange={this.props.handleInputChange} />
+                              handleInputChange={this.props.handleInputChange} isSelected={this.props.isSelected} />
                     )
                 }
                 <details>

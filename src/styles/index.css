@@ -171,9 +171,11 @@ input[type=text] {
 }
 .table td {
     border: 2px solid #9799a7;
+    padding: 2px;
 }
 .table th {
     border: 2px solid #9799a7;
+    padding: 2px;
 }
 
 .table caption {

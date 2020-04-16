@@ -19,26 +19,46 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {selectedProduct: null, products: []};
+        this.state = {products: [{name: null, isSelected: true}]};
         
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleClickDeleteTr = this.handleClickDeleteTr.bind(this);
     }
     
-    handleInputChange(product) { 
-        this.setState({selectedProduct: product});
-        
-        this.setState((state, props) => {
-            let flag = false;
-            for (let i = 0; i < state.products.length; i++) {
-                if (state.products[i] === product) {
-                    flag = true;
-                    break;
-                }          
-            }
+    handleInputChange(product, isSelected) {         
+        if (isSelected) { // добавление продукта
+            this.setState((state, props) => {
+                let flag = false;
+                for (let i = 0; i < state.products.length; i++) {
+                    if (state.products[i].name === product) {
+                        flag = true;
+                        break;
+                    }          
+                }
+
+                if (flag === false) {
+                    return {products: [...state.products, {name: product, isSelected: true}]}
+                }
+            });
+        } else { // удаление продукта из таблицы
+            this.deleteProduct(product);
+        }  
+    }
     
-            if (flag === false) {
-                return {products: [...state.products, product]}
+    handleClickDeleteTr(product) {
+        this.deleteProduct(product);
+    }
+    
+    deleteProduct(product) {
+        this.setState((state, props) => {
+            for (let i = 0; i < state.products.length; i++) {
+                if (state.products[i].name === product) {
+                    state.products.splice(i, 1);
+                    break;
+                }
             }
+            
+            return {products: state.products};
         });
     }
     
@@ -47,8 +67,8 @@ class App extends React.Component {
             <div>    
                 <Topbar />
                 <section>    
-                    <Leftsidebar data={list} handleInputChange={this.handleInputChange}/>
-                    <Table products={this.state.products}/> 
+                    <Leftsidebar data={list} handleInputChange={this.handleInputChange} isSelected={false}/>
+                    <Table products={this.state.products} handleClick={this.handleClickDeleteTr}/> 
                 </section>    
             </div>    
         );

@@ -8,8 +8,8 @@ class Tabel extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {amount: null, note: null};
-        
+        this.state = {products: [...props.products], amount: null, note: null};
+                
         this.handleChangeAmount = this.handleChangeAmount.bind(this);
         this.handleChangeNote = this.handleChangeNote.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -26,6 +26,8 @@ class Tabel extends React.Component {
     }
     
     handleClick(event) {
+        const id = event.currentTarget.parentNode.parentNode.id;
+        this.props.handleClick(id);
         
         event.preventDefault();
     }
@@ -40,22 +42,26 @@ class Tabel extends React.Component {
                     <tbody>
                         <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
                         {
-                            products.map((product) => 
-                                <tr key={product}>
-                                    <td>{product}</td>
-                                    <td>
-                                        <input type="number" name={'amount'}/>
-                                    </td>
-                                    <td>
-                                        <input type="text" name={'note'}/>
-                                    </td>
-                                    <td>
-                                        <button>
-                                            <img src={deleteIcon} className="deleteIcon"/>
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
+                            products.map((product) => {
+                                if (product.name !== null) {
+                                    return (
+                                        <tr key={product.name} id={product.name}>
+                                            <td>{product.name}</td>
+                                            <td>
+                                                <input type="number" name={'amount'}/>
+                                            </td>
+                                            <td>
+                                                <input type="text" name={'note'}/>
+                                            </td>
+                                            <td>
+                                                <button onClick={this.handleClick}>
+                                                    <img src={deleteIcon} className="deleteIcon"/>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    )
+                                }
+                            })
                         }
                     </tbody>  
                 </table>  
