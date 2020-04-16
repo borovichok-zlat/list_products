@@ -43,9 +43,9 @@ class Tabel extends React.Component {
                         <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
                         {
                             products.map((product) => {
-                                if (product.name !== null) {
+                                if (product.id !== null) {
                                     return (
-                                        <tr key={product.name} id={product.name}>
+                                        <tr key={product.id} id={product.id}>
                                             <td>{product.name}</td>
                                             <td>
                                                 <input type="number" name={'amount'}/>
