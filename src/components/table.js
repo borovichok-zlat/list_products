@@ -43,7 +43,7 @@ class Tabel extends React.Component {
                         <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
                         {
                             products.map((product) => {
-                                if (product.id !== null) {
+                                if (product.id !== null && product.isSelected === true) {
                                     return (
                                         <tr key={product.id} id={product.id}>
                                             <td>{product.name}</td>

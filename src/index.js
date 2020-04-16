@@ -51,20 +51,33 @@ class App extends React.Component {
         this.handleClickDeleteTr = this.handleClickDeleteTr.bind(this);
     }
     
+    componentDidMount() {
+        // здесь должен быть запрос в базу
+        let products = [];
+        for (let i = 0; i < list.length; i++) {
+            for (let j = 0; j < list[i].subsection.length; j++) {
+                products.push({id: list[i].subsection[j].id, name: list[i].subsection[j].name, isSelected: false});
+            }
+        }
+        this.setState({products: products});
+    }
+    
+    componentWillUnmount() {
+        
+    }
+    
     handleInputChange(id, name, isSelected) {         
         if (isSelected) { // добавление продукта
             this.setState((state, props) => {
                 let flag = false;
                 for (let i = 0; i < state.products.length; i++) {
                     if (state.products[i].id === id) {
-                        flag = true;
+                        state.products[i].isSelected = isSelected;
                         break;
                     }          
                 }
 
-                if (flag === false) {
-                    return {products: [...state.products, {id: id, name: name, isSelected: true}]}
-                }
+                return {products: state.products}
             });
         } else { // удаление продукта из таблицы
             this.deleteProduct(id);
@@ -79,7 +92,7 @@ class App extends React.Component {
         this.setState((state, props) => {
             for (let i = 0; i < state.products.length; i++) {
                 if (state.products[i].id === id) {
-                    state.products.splice(i, 1);
+                    state.products[i].isSelected = false;
                     break;
                 }
             }
@@ -93,7 +106,7 @@ class App extends React.Component {
             <div>    
                 <Topbar />
                 <section>    
-                    <Leftsidebar data={list} handleInputChange={this.handleInputChange} isSelected={false}/>
+                    <Leftsidebar data={list} handleInputChange={this.handleInputChange}/>
                     <Table products={this.state.products} handleClick={this.handleClickDeleteTr}/>
                 </section>    
             </div>    
