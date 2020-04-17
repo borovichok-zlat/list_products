@@ -8,7 +8,7 @@ class Tabel extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {products: [...props.products], amount: null, note: null};
+        this.state = {amount: null, note: null};
                 
         this.handleChangeAmount = this.handleChangeAmount.bind(this);
         this.handleChangeNote = this.handleChangeNote.bind(this);
@@ -27,13 +27,22 @@ class Tabel extends React.Component {
     
     handleClick(event) {
         const id = event.currentTarget.parentNode.parentNode.id;
-        this.props.handleClick(id);
+        const idTopSection = event.currentTarget.parentNode.parentNode.dataset.idtopsection;
+        this.props.handleClick(id, idTopSection);
         
         event.preventDefault();
     }
     
     render() {
-        const products = this.props.products;
+        let products = [];
+        for (let i = 0; i < this.props.data.length; i++) {
+            for (let j = 0; j < this.props.data[i].subsection.length; j++) {
+                const subsection = this.props.data[i].subsection;
+                if (subsection[j].isSelected === true) {
+                    products.push({id: subsection[j].id, name: subsection[j].name, idTopSection: this.props.data[i].id});
+                }
+            }
+        }
         
         return (
             <section className="main">
@@ -43,24 +52,22 @@ class Tabel extends React.Component {
                         <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
                         {
                             products.map((product) => {
-                                if (product.id !== null && product.isSelected === true) {
-                                    return (
-                                        <tr key={product.id} id={product.id}>
-                                            <td>{product.name}</td>
-                                            <td>
-                                                <input type="number" name={'amount'}/>
-                                            </td>
-                                            <td>
-                                                <input type="text" name={'note'}/>
-                                            </td>
-                                            <td>
-                                                <button onClick={this.handleClick}>
-                                                    <img src={deleteIcon} className="deleteIcon"/>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
+                                return (
+                                    <tr key={product.id} id={product.id} data-idtopsection={product.idTopSection}>
+                                        <td>{product.name}</td>
+                                        <td>
+                                            <input type="number" name={'amount'}/>
+                                        </td>
+                                        <td>
+                                            <input type="text" name={'note'}/>
+                                        </td>
+                                        <td>
+                                            <button onClick={this.handleClick}>
+                                                <img src={deleteIcon} className="deleteIcon"/>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
                             })
                         }
                     </tbody>  

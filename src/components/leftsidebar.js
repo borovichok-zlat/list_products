@@ -76,15 +76,15 @@ class CheckBox extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         
-        this.setState({isSelected: target.checked});
-        this.props.handleInputChange(target.id, target.dataset.name, target.checked);
+      //  this.setState({isSelected: target.checked});
+        this.props.handleInputChange(target.id, target.dataset.name, target.dataset.idtopsection, target.checked);
     }
     
     render() {
         return (
             <div className="borderDiv">
-              <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.state.isSelected}
-                     onChange={this.handleInputChange} data-name={this.props.name} />
+              <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
+                     onChange={this.handleInputChange} data-name={this.props.name} data-idtopsection={this.props.idTopSection} />
               <label>{this.props.name}</label>
               <ButtonDelete name={this.props.name} />   
             </div>
@@ -108,8 +108,8 @@ class List extends React.Component {
                 </summary>
                 {
                     subsection.map((product) => 
-                        <CheckBox key={product.id} id={product.id} name={product.name} handleInputChange={this.props.handleInputChange} 
-                                    isSelected={product.isSelected}/>
+                        <CheckBox key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
+                                    idTopSection={this.props.idTopSection} handleInputChange={this.props.handleInputChange}/>
                     )
                 }
                 <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
@@ -127,7 +127,7 @@ class Leftsidebar extends React.Component {
               <ul>
                 {
                     data.map((products) => 
-                        <List key={products.id} name={products.topSection} subsection={products.subsection} 
+                        <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
                               handleInputChange={this.props.handleInputChange}/>
                     )
                 }
