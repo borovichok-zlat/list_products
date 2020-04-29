@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Topbar from "./components/topbar.js";
 import Leftsidebar from "./components/leftsidebar.js";
 import Table from "./components/table.js";
+// import EditorLeftsidebar from "./components/editorLeftsidebar.js";
 import './styles/index.css';
 
 let list = [
@@ -47,8 +48,7 @@ class App extends React.Component {
         
         this.state = {list: []};
         
-        this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleClickDeleteTr = this.handleClickDeleteTr.bind(this);
+        this.changeSelection = this.changeSelection.bind(this);
     }
     
     componentDidMount() {
@@ -60,47 +60,26 @@ class App extends React.Component {
         
     }
     
-    handleInputChange(id, name, idTopSection, isSelected) {         
-        if (isSelected) { // добавление продукта
-            this.setState((state, props) => {
-                for (let i = 0; i < state.list.length; i++) {
-                    if (state.list[i].id === idTopSection) {
-                        for (let j = 0; j < state.list[i].subsection.length; j++) {
-                            if (state.list[i].subsection[j].id === id) {
-                                state.list[i].subsection[j].isSelected = true;
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-                
-                return {list: state.list}; // на сколько корректно изменение state.list?
-            });
-        } else { // удаление продукта из таблицы
-            this.deleteProduct(id, idTopSection);
-        }  
-    }
-    
-    handleClickDeleteTr(id, idTopSection) {
-        this.deleteProduct(id, idTopSection);
-    }
-    
-    deleteProduct(id, idTopSection) {
-        this.setState((state, props) => {
-            for (let i = 0; i < state.list.length; i++) {
-                if (state.list[i].id === idTopSection) {
-                    for (let j = 0; j < state.list[i].subsection.length; j++) {
-                        if (state.list[i].subsection[j].id === id) {
-                            state.list[i].subsection[j].isSelected = false;
-                            break;
-                        }
-                    }
-                    break;
-                }
-            }
-            
-            return {list: state.list};
+    // добавление-удаление продукта из таблицы
+    changeSelection(id, idTopSection, isSelected) {
+        this.setState(state => {
+           const list = state.list.map(item => {
+               if (item.id === idTopSection) {
+                   const subsection = item.subsection.map(product => {
+                       if (product.id === id) {
+                           const selectedProduct = {id: product.id, name: product.name, isSelected: isSelected};                               
+                           return selectedProduct;
+                       }
+                       return product;
+                   });
+                   const newItem = {id: item.id, topSection: item.topSection, subsection: subsection};
+                   return newItem;
+               } else {
+                   return item;
+               }
+           });
+
+           return {list};
         });
     }
     
@@ -109,8 +88,8 @@ class App extends React.Component {
             <div>    
                 <Topbar />
                 <section>    
-                    <Leftsidebar data={this.state.list} handleInputChange={this.handleInputChange}/>
-                    <Table data={this.state.list} handleClick={this.handleClickDeleteTr}/>
+                    <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
+                    <Table data={this.state.list} handleClick={this.changeSelection}/>
                 </section>    
             </div>    
         );

@@ -28,9 +28,7 @@ class Tabel extends React.Component {
     handleClick(event) {
         const id = event.currentTarget.parentNode.parentNode.id;
         const idTopSection = event.currentTarget.parentNode.parentNode.dataset.idtopsection;
-        this.props.handleClick(id, idTopSection);
-        
-        event.preventDefault();
+        this.props.handleClick(id, idTopSection, false);
     }
     
     render() {
@@ -43,7 +41,7 @@ class Tabel extends React.Component {
                 }
             }
         }
-        
+
         return (
             <section className="main">
                 <table className="table">
@@ -77,5 +75,9 @@ class Tabel extends React.Component {
     }
 }
 
-
 export default Tabel;
+
+/*
+ <td contenteditable="true"></td>
+ <td contenteditable="true"></td>
+*/
