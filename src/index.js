@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import Topbar from "./components/topbar.js";
 import Leftsidebar from "./components/leftsidebar.js";
 import Table from "./components/table.js";
-// import EditorLeftsidebar from "./components/editorLeftsidebar.js";
+import EditorLeftsidebar from "./components/editorLeftsidebar.js";
 import './styles/index.css';
 
 let list = [
@@ -46,9 +46,11 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {list: []};
+        this.state = {list: [], hideEditor: true};
         
         this.changeSelection = this.changeSelection.bind(this);
+        this.handleClickHideEditor = this.handleClickHideEditor.bind(this);
+        this.changeNameProduct = this.changeNameProduct.bind(this);
     }
     
     componentDidMount() {
@@ -83,12 +85,45 @@ class App extends React.Component {
         });
     }
     
+    handleClickHideEditor(value) {
+        this.setState({hideEditor: value});
+    }
+    
+    changeNameProduct(id, idTopSection, newName) {
+        this.setState(state => {
+           const list = state.list.map(item => {
+               if (item.id === idTopSection) {
+                   const subsection = item.subsection.map(product => {
+                       if (product.id === id) {
+                           const selectedProduct = {id: product.id, name: newName, isSelected: product.isSelected};  
+                           return selectedProduct;
+                       }
+                       return product;
+                   });
+                   const newItem = {id: item.id, topSection: item.topSection, subsection: subsection};
+                   return newItem;
+               } else {
+                   return item;
+               }
+           });
+
+           return {list};
+        });
+    }
+    
     render() {
         return (
             <div>    
-                <Topbar />
-                <section>    
-                    <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
+                <Topbar handleClick={this.handleClickHideEditor}/>
+                <section> 
+                    {
+                        this.state.hideEditor ? (
+                            <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
+                        ) : (
+                            <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
+                                changeNameProduct={this.changeNameProduct}/>
+                        )
+                    }            
                     <Table data={this.state.list} handleClick={this.changeSelection}/>
                 </section>    
             </div>    

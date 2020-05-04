@@ -148,7 +148,7 @@ input[type=text] {
 }
 .deleteButton {
     margin-right: 0;
-    margin-left: 40px;
+    margin-left: 10px;
 }
 
 .borderDiv {
@@ -183,3 +183,30 @@ input[type=text] {
 }
 
 /*----------------------------------*/
+
+/* editorLeftSidebar */
+
+.view,
+.edit {
+  width: 70%; 
+  height: 16px;    
+  font-family: sans-serif;
+  font-size: 14px;
+  display: inline-block;
+}
+
+.view {
+  padding: 2px;
+  border: 1px solid black;
+}
+
+.edit {
+  max-width: 70%;   
+  border: 1px solid green;
+  padding: 0px;
+}
+
+.edit:focus {
+  /* удаление обводки фокуса в Safari */
+  outline: none;
+}

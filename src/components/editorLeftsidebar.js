@@ -1,6 +1,4 @@
 //---- класс редактирования списка продуктов для добавления в таблицу ----//
-
-
 import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
@@ -27,6 +25,7 @@ class Input extends React.Component {
         } else {
             alert("новый продукт:" + this.state.value);
         }
+        event.preventDefault();
     }
     
     render() {
@@ -62,27 +61,39 @@ class ButtonDelete extends React.Component {
     }
 }
 
-
-//---- чекбоксы для выбора продуктов ----//
-class CheckBox extends React.Component {
+class Item extends React.Component {
     constructor(props) {
         super(props);
         
-        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
     
-    handleInputChange(event) {
-        const target = event.target;
+    handleClick(event) {
+        let view = event.target;
         
-        this.props.handleInputChange(target.id, target.dataset.name, target.dataset.idtopsection, target.checked);
+        let input = document.createElement("input");
+        input.type = "text";
+        input.className = "edit";
+        input.value = view.innerHTML;
+        
+        let changeNameProduct = this.props.changeNameProduct;
+        let id = this.props.id;
+        let idTopSection = this.props.idTopSection;
+        input.onblur = function() {
+            view.innerHTML = input.value;
+            input.replaceWith(view);
+            changeNameProduct(id, idTopSection, input.value);
+            
+        };
+
+        view.replaceWith(input);
+        input.focus();
     }
     
     render() {
         return (
             <div className="borderDiv">
-              <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
-                     onChange={this.handleInputChange} data-name={this.props.name} data-idtopsection={this.props.idTopSection} />
-              <label>{this.props.name}</label>
+              <div className="view" onClick={this.handleClick}>{this.props.name}</div>
               <ButtonDelete name={this.props.name} />   
             </div>
         );
@@ -105,8 +116,8 @@ class List extends React.Component {
                 </summary>
                 {
                     subsection.map((product) => 
-                        <CheckBox key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
-                                    idTopSection={this.props.idTopSection} handleInputChange={this.props.handleInputChange}/>
+                        <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
+                                    idTopSection={this.props.idTopSection} changeNameProduct={this.props.changeNameProduct}/>
                     )
                 }
                 <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
@@ -116,16 +127,27 @@ class List extends React.Component {
 }
 
 //---- левое меню ----//
-class Leftsidebar extends React.Component {   
+class Leftsidebar extends React.Component { 
+    constructor(props) {
+        super(props);
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick() {
+        this.props.handleClick(true);
+    }
+    
     render() {
        const data = this.props.data;
+        
        return (
             <section className="sidebar_left">
               <ul>
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
-                              handleInputChange={this.props.handleInputChange}/>
+                            changeNameProduct={this.props.changeNameProduct}/>          
                     )
                 }
                  <details>
@@ -133,6 +155,7 @@ class Leftsidebar extends React.Component {
                     <Input name={'newTopSection'} placeholder={'Введите название раздела'}/>
                 </details> 
               </ul>
+              <button onClick={this.handleClick}>Закончить редактирование</button>    
             </section>
         );
     }
