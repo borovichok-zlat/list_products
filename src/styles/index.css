@@ -63,9 +63,9 @@ body {
 /*----------------------------------*/
 .sidebar_left{
   overflow-y: auto;
-  width: 25%;    
+  width: 30%;    
   position: fixed;
-  height: 90%;
+  height: 85%;
   background: #f0f0f0;
   border-right: 3px #aaa solid;
   padding-right: 30px; 
@@ -157,8 +157,8 @@ input[type=text] {
 
 /*----------------------------------*/
 .main {
-    left: 35%; 
-    height: 90%;
+    left: 40%; 
+    height: 85%;
     position: fixed;
     border: 2px solid #9799a7;
 }
@@ -187,7 +187,9 @@ input[type=text] {
 /* editorLeftSidebar */
 
 .view,
-.edit {
+.edit,
+.viewTop, 
+.editTop {
   width: 70%; 
   height: 16px;    
   font-family: sans-serif;
@@ -195,18 +197,32 @@ input[type=text] {
   display: inline-block;
 }
 
-.view {
+.view,
+.viewTop {
   padding: 2px;
   border: 1px solid black;
 }
 
-.edit {
+.edit,
+.editTop {
   max-width: 70%;   
   border: 1px solid green;
   padding: 0px;
 }
 
-.edit:focus {
+.edit:focus,
+.editTop:focus {
   /* удаление обводки фокуса в Safari */
   outline: none;
+}
+
+.viewTop,
+.editTop {
+  width: 60%; 
+}
+
+.editTop {
+  max-width: 60%;   
+  border: 1px solid green;
+  padding: 0px;
 }

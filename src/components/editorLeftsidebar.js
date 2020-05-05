@@ -52,6 +52,8 @@ class ButtonDelete extends React.Component {
         } else {
             alert('delete product: ' + this.props.name);
         }
+        
+        event.preventDefault();
     }
     
     render() {
@@ -79,13 +81,12 @@ class Item extends React.Component {
         let changeNameProduct = this.props.changeNameProduct;
         let id = this.props.id;
         let idTopSection = this.props.idTopSection;
-        input.onblur = function() {
+        input.onblur = () => {
             view.innerHTML = input.value;
             input.replaceWith(view);
             changeNameProduct(id, idTopSection, input.value);
-            
         };
-
+        
         view.replaceWith(input);
         input.focus();
     }
@@ -100,6 +101,51 @@ class Item extends React.Component {
     }
 }
 
+class Summary extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick(event) {
+        let view = event.target;
+        
+        let input = document.createElement("input");
+        input.type = "text";
+        input.className = "editTop";
+        input.value = view.innerHTML;
+        
+        let changeNameTopSection = this.props.changeNameTopSection;
+        let id = this.props.id;
+        let idTopSection = this.props.idTopSection;
+        input.onblur = () => {
+            view.innerHTML = input.value;
+            input.replaceWith(view);
+            changeNameTopSection(idTopSection, input.value);
+        };
+        
+        // чтобы не раскрывался список
+        input.onkeyup = (event) => {
+            event.preventDefault();
+        };
+
+        view.replaceWith(input);
+        input.focus();
+        
+        event.preventDefault();
+    }
+    
+    render() {
+        return (
+            <summary>
+                <div className="viewTop" onClick={this.handleClick}>{this.props.name}</div> 
+                <ButtonDelete name={this.props.name} section={true}/>
+            </summary>
+        );
+    }
+}
+
 //---- разделы с продуктами ----//
 class List extends React.Component {
     constructor(props) {
@@ -110,10 +156,7 @@ class List extends React.Component {
         const subsection = this.props.subsection;
         return (
             <details>
-                <summary>
-                    {this.props.name} 
-                    <ButtonDelete name={this.props.name} section={true}/>
-                </summary>
+                <Summary name={this.props.name} idTopSection={this.props.idTopSection} changeNameTopSection={this.props.changeNameTopSection}/>
                 {
                     subsection.map((product) => 
                         <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
@@ -127,7 +170,7 @@ class List extends React.Component {
 }
 
 //---- левое меню ----//
-class Leftsidebar extends React.Component { 
+class EditorLeftsidebar extends React.Component { 
     constructor(props) {
         super(props);
         
@@ -147,7 +190,7 @@ class Leftsidebar extends React.Component {
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
-                            changeNameProduct={this.props.changeNameProduct}/>          
+                            changeNameProduct={this.props.changeNameProduct} changeNameTopSection={this.props.changeNameTopSection}/>          
                     )
                 }
                  <details>
@@ -161,4 +204,4 @@ class Leftsidebar extends React.Component {
     }
 }
 
-export default Leftsidebar;
+export default EditorLeftsidebar;

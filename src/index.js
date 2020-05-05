@@ -51,6 +51,7 @@ class App extends React.Component {
         this.changeSelection = this.changeSelection.bind(this);
         this.handleClickHideEditor = this.handleClickHideEditor.bind(this);
         this.changeNameProduct = this.changeNameProduct.bind(this);
+        this.changeNameTopSection = this.changeNameTopSection.bind(this);
     }
     
     componentDidMount() {
@@ -111,6 +112,21 @@ class App extends React.Component {
         });
     }
     
+    changeNameTopSection(idTopSection, newName) {
+        this.setState(state => {
+           const list = state.list.map(item => {
+               if (item.id === idTopSection) {
+                   const newItem = {id: item.id, topSection: newName, subsection: item.subsection};
+                   return newItem;
+               } else {
+                   return item;
+               }
+           });
+
+           return {list};
+        });
+    }
+    
     render() {
         return (
             <div>    
@@ -121,7 +137,7 @@ class App extends React.Component {
                             <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
                         ) : (
                             <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
-                                changeNameProduct={this.changeNameProduct}/>
+                                changeNameProduct={this.changeNameProduct} changeNameTopSection={this.changeNameTopSection}/>
                         )
                     }            
                     <Table data={this.state.list} handleClick={this.changeSelection}/>
