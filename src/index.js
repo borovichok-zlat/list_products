@@ -21,7 +21,8 @@ let list = [
                 subsection: [{id: "v_1", name: "картошка", isSelected: false},
                              {id: "v_2", name: "огурцы", isSelected: false},
                              {id: "v_3", name: "помидоры", isSelected: false}, 
-                             {id: "v_4", name: "перец", isSelected: false}]},
+                             {id: "v_4", name: "перец", isSelected: false},
+                             {id: "v_5", name: "кабачок", isSelected: false}]},
     {id: "t_4", topSection: "хлеб", 
                 subsection: [{id: "b_1", name: "черный хлеб", isSelected: false},
                              {id: "b_2", name: "багет", isSelected: false}]},
@@ -34,7 +35,9 @@ let list = [
                 subsection: [{id: "c_1", name: "зубная паста", isSelected: false}, 
                              {id: "c_2", name: "дезодорант", isSelected: false}, 
                              {id: "c_3", name: "шампунь", isSelected: false},
-                             {id: "c_4", name: "мыло", isSelected: false}]},
+                             {id: "c_4", name: "мыло", isSelected: false},
+                             {id: "c_5", name: "гель для душа", isSelected: false},
+                             {id: "c_6", name: "зубная нить", isSelected: false}]},
     {id: "t_7", topSection: "дети", 
                 subsection: [{id: "chld_1", name: "пюре овощное", isSelected: false},
                              {id: "chld_2", name: "подгузники", isSelected: false}, 
@@ -52,6 +55,7 @@ class App extends React.Component {
         this.handleClickHideEditor = this.handleClickHideEditor.bind(this);
         this.changeNameProduct = this.changeNameProduct.bind(this);
         this.changeNameTopSection = this.changeNameTopSection.bind(this);
+        this.addNewProduct = this.addNewProduct.bind(this);
     }
     
     componentDidMount() {
@@ -86,10 +90,12 @@ class App extends React.Component {
         });
     }
     
+    // скрыть-показать редактор
     handleClickHideEditor(value) {
         this.setState({hideEditor: value});
     }
     
+    // меняем назание продукта
     changeNameProduct(id, idTopSection, newName) {
         this.setState(state => {
            const list = state.list.map(item => {
@@ -112,14 +118,34 @@ class App extends React.Component {
         });
     }
     
+    // меняем название секции
     changeNameTopSection(idTopSection, newName) {
         this.setState(state => {
            const list = state.list.map(item => {
                if (item.id === idTopSection) {
-                   const newItem = {id: item.id, topSection: newName, subsection: item.subsection};
+                   const newItem = {id: idTopSection, topSection: newName, subsection: item.subsection};
                    return newItem;
                } else {
                    return item;
+               }
+           });
+
+           return {list};
+        });
+    }
+    
+    // добавление нового продукта
+    addNewProduct(id, name, idTopSection) {
+        this.setState(state => {
+           const list = state.list.map(topSection => {
+               if (topSection.id === idTopSection) {
+                   let item = {id: id, name: name, isSelected: false};
+                   let subsection = [...topSection.subsection, item];
+                   
+                   const newTopSection= {id: idTopSection, topSection: topSection.topSection, subsection: subsection};
+                   return newTopSection;
+               } else {
+                   return topSection;
                }
            });
 
@@ -137,7 +163,8 @@ class App extends React.Component {
                             <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
                         ) : (
                             <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
-                                changeNameProduct={this.changeNameProduct} changeNameTopSection={this.changeNameTopSection}/>
+                                changeNameProduct={this.changeNameProduct} changeNameTopSection={this.changeNameTopSection}
+                                addNewProduct={this.addNewProduct}/>
                         )
                     }            
                     <Table data={this.state.list} handleClick={this.changeSelection}/>

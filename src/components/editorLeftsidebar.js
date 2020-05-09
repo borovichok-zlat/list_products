@@ -101,6 +101,43 @@ class Item extends React.Component {
     }
 }
 
+class NewItem extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick(event) {
+        let view = event.target;
+        
+        let input = document.createElement("input");
+        input.type = "text";
+        input.className = "edit";
+        input.placeholder = view.innerHTML;
+        
+        let addNewProduct = this.props.addNewProduct;
+        let id = this.props.id;
+        let idTopSection = this.props.idTopSection;
+        input.onblur = () => {
+            view.innerHTML = input.value;
+            input.replaceWith(view);
+            addNewProduct(id, input.value, idTopSection);
+        };
+        
+        view.replaceWith(input);
+        input.focus();
+    }
+    
+    render() {
+        return (
+            <div className="borderDiv">
+              <div className="view" onClick={this.handleClick}>Введите название продукта</div>
+            </div>
+        );
+    }
+}
+
 class Summary extends React.Component {
     constructor(props) {
         super(props);
@@ -154,20 +191,26 @@ class List extends React.Component {
     
     render() {
         const subsection = this.props.subsection;
+        let index = subsection[0].id.indexOf("_");
+        let newId = subsection[0].id.substr(0, index + 1) + (subsection.length + 1);
+        console.log(newId);
+        
         return (
             <details>
                 <Summary name={this.props.name} idTopSection={this.props.idTopSection} changeNameTopSection={this.props.changeNameTopSection}/>
                 {
-                    subsection.map((product) => 
-                        <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
+                    subsection.map((product) =>                     
+                       <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
                                     idTopSection={this.props.idTopSection} changeNameProduct={this.props.changeNameProduct}/>
                     )
                 }
-                <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
+                <NewItem key={newId} id={newId} idTopSection={this.props.idTopSection} addNewProduct={this.props.addNewProduct}/>
             </details>
         );
     }
 }
+
+// <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
 
 //---- левое меню ----//
 class EditorLeftsidebar extends React.Component { 
@@ -190,7 +233,8 @@ class EditorLeftsidebar extends React.Component {
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
-                            changeNameProduct={this.props.changeNameProduct} changeNameTopSection={this.props.changeNameTopSection}/>          
+                            changeNameProduct={this.props.changeNameProduct} changeNameTopSection={this.props.changeNameTopSection}
+                            addNewProduct={this.props.addNewProduct}/>          
                     )
                 }
                  <details>
