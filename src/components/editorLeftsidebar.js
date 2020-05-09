@@ -20,7 +20,7 @@ class Input extends React.Component {
     }
     
     handleSubmit(event) {
-        if (this.props.name === 'newTopSection') {
+        if (this.props.name === 'newSection') {
             alert("новый раздел:" + this.state.value);
         } else {
             alert("новый продукт:" + this.state.value);
@@ -77,14 +77,19 @@ class Item extends React.Component {
         input.type = "text";
         input.className = "edit";
         input.value = view.innerHTML;
+        let oldInnerHTML = view.innerHTML;
         
         let changeNameProduct = this.props.changeNameProduct;
         let id = this.props.id;
-        let idTopSection = this.props.idTopSection;
+        let idSection = this.props.idSection;
         input.onblur = () => {
             view.innerHTML = input.value;
             input.replaceWith(view);
-            changeNameProduct(id, idTopSection, input.value);
+            if (input.value.trim()) {
+                changeNameProduct(id, idSection, input.value);
+            } else {
+                view.innerHTML = oldInnerHTML;
+            }
         };
         
         view.replaceWith(input);
@@ -118,11 +123,15 @@ class NewItem extends React.Component {
         
         let addNewProduct = this.props.addNewProduct;
         let id = this.props.id;
-        let idTopSection = this.props.idTopSection;
+        let idSection = this.props.idSection;
         input.onblur = () => {
             view.innerHTML = input.value;
             input.replaceWith(view);
-            addNewProduct(id, input.value, idTopSection);
+            if (input.value.trim()) { // удаляем лишние пробелы и проверяем, что строка не пустая
+                addNewProduct(id, input.value, idSection);
+            } else {
+                view.innerHTML = input.placeholder;
+            }
         };
         
         view.replaceWith(input);
@@ -152,14 +161,19 @@ class Summary extends React.Component {
         input.type = "text";
         input.className = "editTop";
         input.value = view.innerHTML;
+        let oldInnerHTML = view.innerHTML;
         
-        let changeNameTopSection = this.props.changeNameTopSection;
+        let changeNameSection = this.props.changeNameSection;
         let id = this.props.id;
-        let idTopSection = this.props.idTopSection;
+        let idSection = this.props.idSection;
         input.onblur = () => {
             view.innerHTML = input.value;
             input.replaceWith(view);
-            changeNameTopSection(idTopSection, input.value);
+            if (input.value.trim()) {
+                changeNameSection(idSection, input.value);
+            } else {
+                view.innerHTML = oldInnerHTML;
+            } 
         };
         
         // чтобы не раскрывался список
@@ -190,21 +204,20 @@ class List extends React.Component {
     }
     
     render() {
-        const subsection = this.props.subsection;
-        let index = subsection[0].id.indexOf("_");
-        let newId = subsection[0].id.substr(0, index + 1) + (subsection.length + 1);
-        console.log(newId);
+        const items = this.props.items;
+        let index = items[0].id.lastIndexOf("_");
+        let newId = items[0].id.substr(0, index + 1) + (items.length + 1);
         
         return (
             <details>
-                <Summary name={this.props.name} idTopSection={this.props.idTopSection} changeNameTopSection={this.props.changeNameTopSection}/>
+                <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}/>
                 {
-                    subsection.map((product) =>                     
+                    items.map((product) =>                     
                        <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
-                                    idTopSection={this.props.idTopSection} changeNameProduct={this.props.changeNameProduct}/>
+                                    idSection={this.props.idSection} changeNameProduct={this.props.changeNameProduct}/>
                     )
                 }
-                <NewItem key={newId} id={newId} idTopSection={this.props.idTopSection} addNewProduct={this.props.addNewProduct}/>
+                <NewItem key={newId} id={newId} idSection={this.props.idSection} addNewProduct={this.props.addNewProduct}/>
             </details>
         );
     }
@@ -232,14 +245,14 @@ class EditorLeftsidebar extends React.Component {
               <ul>
                 {
                     data.map((products) => 
-                        <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
-                            changeNameProduct={this.props.changeNameProduct} changeNameTopSection={this.props.changeNameTopSection}
+                        <List key={products.id} name={products.section} items={products.items} idSection={products.id}
+                            changeNameProduct={this.props.changeNameProduct} changeNameSection={this.props.changeNameSection}
                             addNewProduct={this.props.addNewProduct}/>          
                     )
                 }
                  <details>
                     <summary>добавить новый раздел</summary>
-                    <Input name={'newTopSection'} placeholder={'Введите название раздела'}/>
+                    <Input name={'newSection'} placeholder={'Введите название раздела'}/>
                 </details> 
               </ul>
               <button onClick={this.handleClick}>Закончить редактирование</button>    

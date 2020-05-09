@@ -27,17 +27,17 @@ class Tabel extends React.Component {
     
     handleClick(event) {
         const id = event.currentTarget.parentNode.parentNode.id;
-        const idTopSection = event.currentTarget.parentNode.parentNode.dataset.idtopsection;
-        this.props.handleClick(id, idTopSection, false);
+        const idSection = event.currentTarget.parentNode.parentNode.dataset.idsection;
+        this.props.handleClick(id, idSection, false);
     }
     
     render() {
         let products = [];
         for (let i = 0; i < this.props.data.length; i++) {
-            for (let j = 0; j < this.props.data[i].subsection.length; j++) {
-                const subsection = this.props.data[i].subsection;
-                if (subsection[j].isSelected === true) {
-                    products.push({id: subsection[j].id, name: subsection[j].name, idTopSection: this.props.data[i].id});
+            for (let j = 0; j < this.props.data[i].items.length; j++) {
+                const items = this.props.data[i].items;
+                if (items[j].isSelected === true) {
+                    products.push({id: items[j].id, name: items[j].name, idSection: this.props.data[i].id});
                 }
             }
         }
@@ -51,7 +51,7 @@ class Tabel extends React.Component {
                         {
                             products.map((product) => {
                                 return (
-                                    <tr key={product.id} id={product.id} data-idtopsection={product.idTopSection}>
+                                    <tr key={product.id} id={product.id} data-idsection={product.idSection}>
                                         <td>{product.name}</td>
                                         <td>
                                             <input type="number" name={'amount'}/>

@@ -14,14 +14,14 @@ class CheckBox extends React.Component {
     handleInputChange(event) {
         const target = event.target;
         
-        this.props.handleInputChange(target.id, target.dataset.idtopsection, target.checked);
+        this.props.handleInputChange(target.id, target.dataset.idsection, target.checked);
     }
     
     render() {
         return (
             <div className="borderDiv">
               <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
-                     onChange={this.handleInputChange} data-name={this.props.name} data-idtopsection={this.props.idTopSection}/>
+                     onChange={this.handleInputChange} data-name={this.props.name} data-idsection={this.props.idSection}/>
               <label>{this.props.name}</label>
             </div>
         );
@@ -35,14 +35,14 @@ class List extends React.Component {
     }
     
     render() {
-        const subsection = this.props.subsection;
+        const items = this.props.items;
         return (
             <details>
                 <summary>{this.props.name}</summary>
                 {
-                    subsection.map((product) => 
+                    items.map((product) => 
                         <CheckBox key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
-                                    idTopSection={this.props.idTopSection} handleInputChange={this.props.handleInputChange}/>
+                                    idSection={this.props.idSection} handleInputChange={this.props.handleInputChange}/>
                     )
                 }
             </details>
@@ -59,7 +59,7 @@ class Leftsidebar extends React.Component {
               <ul>
                 {
                     data.map((products) => 
-                        <List key={products.id} name={products.topSection} subsection={products.subsection} idTopSection={products.id}
+                        <List key={products.id} name={products.section} items={products.items} idSection={products.id}
                               handleInputChange={this.props.handleInputChange}/>
                     )
                 }
