@@ -69,7 +69,9 @@ body {
   background: #f0f0f0;
   border-right: 3px #aaa solid;
   padding-right: 30px; 
-  padding-left: 30px;    
+  padding-left: 30px;
+  padding-top: 5px;
+  padding-bottom: 10px;
 }
 .sidebar_left h1{
   font-size: 1em;
@@ -79,7 +81,7 @@ body {
 }
 
 /* accordeon */
-details {
+details, .addSection {
     border: 1px solid #E1E1E1;
     border-radius: 5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
