@@ -4,38 +4,31 @@ import ReactDOM from "react-dom";
 import '../styles/index.css';
 import deleteIcon from '../styles/img/deletesweep24px.svg';
 
-//---- добавление нового раздела или продукта ----//
-class Input extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.state = {value: ''};
-        
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+//---- input ----//
+function handleClick(view, isValue, className, callback, ...args) {
+    let input = document.createElement("input");
+    input.type = "text";
+    input.className = className;
+    if (isValue) {
+       input.value = view.innerHTML; 
+    } else {
+        input.placeholder = view.innerHTML;
     }
-    
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-    
-    handleSubmit(event) {
-        if (this.props.name === 'newSection') {
-            alert("новый раздел:" + this.state.value);
-        } else {
-            alert("новый продукт:" + this.state.value);
+
+    input.onblur = () => {
+        input.replaceWith(view);
+        if (input.value.trim()) {
+            callback(...args, input.value);
         }
-        event.preventDefault();
-    }
+    };
+
+    view.replaceWith(input);
+    input.focus();
     
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <input type="text" placeholder={this.props.placeholder} onChange={this.handleChange}/>
-                <input type="submit" value="сохранить" />    
-            </form>
-        );
-    }
+    // чтобы не раскрывался список
+    input.onkeyup = (event) => {
+        event.preventDefault();
+    };
 }
 
 //---- кнопка удаления раздела или продукта ----//
@@ -71,29 +64,7 @@ class Item extends React.Component {
     }
     
     handleClick(event) {
-        let view = event.target;
-        
-        let input = document.createElement("input");
-        input.type = "text";
-        input.className = "edit";
-        input.value = view.innerHTML;
-        let oldInnerHTML = view.innerHTML;
-        
-        let changeNameProduct = this.props.changeNameProduct;
-        let id = this.props.id;
-        let idSection = this.props.idSection;
-        input.onblur = () => {
-            view.innerHTML = input.value;
-            input.replaceWith(view);
-            if (input.value.trim()) {
-                changeNameProduct(id, idSection, input.value);
-            } else {
-                view.innerHTML = oldInnerHTML;
-            }
-        };
-        
-        view.replaceWith(input);
-        input.focus();
+        handleClick(event.target, true, "edit", this.props.changeNameItem, this.props.id, this.props.idSection);
     }
     
     render() {
@@ -114,28 +85,7 @@ class NewItem extends React.Component {
     }
     
     handleClick(event) {
-        let view = event.target;
-        
-        let input = document.createElement("input");
-        input.type = "text";
-        input.className = "edit";
-        input.placeholder = view.innerHTML;
-        
-        let addNewProduct = this.props.addNewProduct;
-        let id = this.props.id;
-        let idSection = this.props.idSection;
-        input.onblur = () => {
-            view.innerHTML = input.value;
-            input.replaceWith(view);
-            if (input.value.trim()) { // удаляем лишние пробелы и проверяем, что строка не пустая
-                addNewProduct(id, input.value, idSection);
-            } else {
-                view.innerHTML = input.placeholder;
-            }
-        };
-        
-        view.replaceWith(input);
-        input.focus();
+        handleClick(event.target, false, "edit", this.props.addItem, this.props.id, this.props.idSection);
     }
     
     render() {
@@ -155,35 +105,7 @@ class Summary extends React.Component {
     }
     
     handleClick(event) {
-        let view = event.target;
-        
-        let input = document.createElement("input");
-        input.type = "text";
-        input.className = "editTop";
-        input.value = view.innerHTML;
-        let oldInnerHTML = view.innerHTML;
-        
-        let changeNameSection = this.props.changeNameSection;
-        let id = this.props.id;
-        let idSection = this.props.idSection;
-        input.onblur = () => {
-            view.innerHTML = input.value;
-            input.replaceWith(view);
-            if (input.value.trim()) {
-                changeNameSection(idSection, input.value);
-            } else {
-                view.innerHTML = oldInnerHTML;
-            } 
-        };
-        
-        // чтобы не раскрывался список
-        input.onkeyup = (event) => {
-            event.preventDefault();
-        };
-
-        view.replaceWith(input);
-        input.focus();
-        
+        handleClick(event.target, true, "editTop", this.props.changeNameSection, this.props.idSection);
         event.preventDefault();
     }
     
@@ -197,6 +119,27 @@ class Summary extends React.Component {
     }
 }
 
+//----добавление нового раздела----//
+class NewSummary extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick(event) {
+        handleClick(event.target, false, "editTop", this.props.addSection, this.props.id);                
+    }
+    
+    render() {
+        return (
+            <div className="addSection">
+                <div className="viewTop" onClick={this.handleClick}>Добавить новый раздел</div>
+            </div>
+        );
+    }
+}
+
 //---- разделы с продуктами ----//
 class List extends React.Component {
     constructor(props) {
@@ -205,25 +148,29 @@ class List extends React.Component {
     
     render() {
         const items = this.props.items;
-        let index = items[0].id.lastIndexOf("_");
-        let newId = items[0].id.substr(0, index + 1) + (items.length + 1);
+        let index, id;
+        if (items.length > 0) {
+            index = items[0].id.lastIndexOf("_");
+            id = items[0].id.substr(0, index + 1) + (items.length + 1);
+        } else {
+            index = this.props.idSection;
+            id = index + "_1";
+        }        
         
         return (
             <details>
                 <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}/>
                 {
-                    items.map((product) =>                     
-                       <Item key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
-                                    idSection={this.props.idSection} changeNameProduct={this.props.changeNameProduct}/>
+                    items.map((item) =>                     
+                       <Item key={item.id} id={item.id} name={item.name} isSelected={item.isSelected}
+                                    idSection={this.props.idSection} changeNameItem={this.props.changeNameItem}/>
                     )
                 }
-                <NewItem key={newId} id={newId} idSection={this.props.idSection} addNewProduct={this.props.addNewProduct}/>
+                <NewItem key={id} id={id} idSection={this.props.idSection} addItem={this.props.addItem}/>
             </details>
         );
     }
 }
-
-// <Input key={'newProduct' + this.props.name} name={'newProduct' + this.props.name} placeholder={'Введите название продукта'}/>
 
 //---- левое меню ----//
 class EditorLeftsidebar extends React.Component { 
@@ -239,21 +186,20 @@ class EditorLeftsidebar extends React.Component {
     
     render() {
        const data = this.props.data;
+       let index = data[0].id.lastIndexOf("_");
+       let id = data[0].id.substr(0, index + 1) + (data.length + 1);    
         
        return (
             <section className="sidebar_left">
               <ul>
                 {
-                    data.map((products) => 
-                        <List key={products.id} name={products.section} items={products.items} idSection={products.id}
-                            changeNameProduct={this.props.changeNameProduct} changeNameSection={this.props.changeNameSection}
-                            addNewProduct={this.props.addNewProduct}/>          
+                    data.map((items) => 
+                        <List key={items.id} name={items.section} items={items.items} idSection={items.id}
+                            changeNameItem={this.props.changeNameItem} changeNameSection={this.props.changeNameSection}
+                            addItem={this.props.addItem}/>          
                     )
                 }
-                 <details>
-                    <summary>добавить новый раздел</summary>
-                    <Input name={'newSection'} placeholder={'Введите название раздела'}/>
-                </details> 
+                <NewSummary id={id} addSection={this.props.addSection}/>  
               </ul>
               <button onClick={this.handleClick}>Закончить редактирование</button>    
             </section>

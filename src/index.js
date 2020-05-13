@@ -51,11 +51,13 @@ class App extends React.Component {
         
         this.state = {list: [], hideEditor: true};
         
+        this.changeNameSection = this.changeNameSection.bind(this);
         this.changeSelection = this.changeSelection.bind(this);
         this.handleClickHideEditor = this.handleClickHideEditor.bind(this);
-        this.changeNameProduct = this.changeNameProduct.bind(this);
+        this.changeNameItem = this.changeNameItem.bind(this);
         this.changeNameSection = this.changeNameSection.bind(this);
-        this.addNewProduct = this.addNewProduct.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.addSection = this.addSection.bind(this);
     }
     
     componentDidMount() {
@@ -67,10 +69,32 @@ class App extends React.Component {
         
     }
     
+    changePropertyItem(stateList, idSection, id, name, isSelected) {
+        let list = stateList.map(section => {
+           if (section.id === idSection) {
+               const items = section.items.map(item => {
+                   if (item.id === id) {
+                       let name = (name !== null) ? name : item.name;
+                       let isSelected = (isSelected !== null) ? isSelected : item.isSelected; 
+                       const selectedItem = {id: id, name: name, isSelected: isSelected};                               
+                       return selectedItem;
+                   }
+                   return item;
+               });
+               const newSection = {id: section.id, section: section.section, items: items};
+               return newSection;
+           } else {
+               return section;
+           }
+       });
+
+       return list;
+    }
+    
     // добавление-удаление продукта из таблицы
     changeSelection(id, idSection, isSelected) {
         this.setState(state => {
-           const list = state.list.map(section => {
+            const list = state.list.map(section => {
                if (section.id === idSection) {
                    const items = section.items.map(item => {
                        if (item.id === id) {
@@ -96,13 +120,13 @@ class App extends React.Component {
     }
     
     // меняем назание продукта
-    changeNameProduct(id, idSection, newName) {
+    changeNameItem(id, idSection, name) {
         this.setState(state => {
            const list = state.list.map(section => {
                if (section.id === idSection) {
                    const items = section.items.map(item => {
                        if (item.id === id) {
-                           const selectedItem = {id: item.id, name: newName, isSelected: item.isSelected};  
+                           const selectedItem = {id: item.id, name: name, isSelected: item.isSelected};  
                            return selectedItem;
                        }
                        return item;
@@ -119,11 +143,11 @@ class App extends React.Component {
     }
     
     // меняем название секции
-    changeNameSection(idSection, newName) {
+    changeNameSection(idSection, name) {
         this.setState(state => {
            const list = state.list.map(section => {
                if (section.id === idSection) {
-                   const newSection = {id: idSection, section: newName, items: section.items};
+                   const newSection = {id: idSection, section: name, items: section.items};
                    return newSection;
                } else {
                    return section;
@@ -135,14 +159,14 @@ class App extends React.Component {
     }
     
     // добавление нового продукта
-    addNewProduct(id, name, idSection) {
+    addItem(id, idSection, name) {
         this.setState(state => {
            const list = state.list.map(section => {
                if (section.id === idSection) {
                    let item = {id: id, name: name, isSelected: false};
                    let items = [...section.items, item];
                    
-                   const newSection= {id: idSection, section: section.section, items: items};
+                   const newSection = {id: idSection, section: section.section, items: items};
                    return newSection;
                } else {
                    return section;
@@ -151,6 +175,12 @@ class App extends React.Component {
 
            return {list};
         });
+    }
+    
+    // добавление нового раздела
+    addSection(id, name) {
+        let section = {id: id, section: name, items: []};
+        this.setState({list: [...this.state.list, section]});
     }
     
     render() {
@@ -163,8 +193,8 @@ class App extends React.Component {
                             <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
                         ) : (
                             <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
-                                changeNameProduct={this.changeNameProduct} changeNameSection={this.changeNameSection}
-                                addNewProduct={this.addNewProduct}/>
+                                changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
+                                addItem={this.addItem} addSection={this.addSection}/>
                         )
                     }            
                     <Table data={this.state.list} handleClick={this.changeSelection}/>
