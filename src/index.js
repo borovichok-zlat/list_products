@@ -58,6 +58,8 @@ class App extends React.Component {
         this.changeNameSection = this.changeNameSection.bind(this);
         this.addItem = this.addItem.bind(this);
         this.addSection = this.addSection.bind(this);
+        this.deleteSection = this.deleteSection.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
     }
     
     componentDidMount() {
@@ -68,29 +70,7 @@ class App extends React.Component {
     componentWillUnmount() {
         
     }
-    
-    changePropertyItem(stateList, idSection, id, name, isSelected) {
-        let list = stateList.map(section => {
-           if (section.id === idSection) {
-               const items = section.items.map(item => {
-                   if (item.id === id) {
-                       let name = (name !== null) ? name : item.name;
-                       let isSelected = (isSelected !== null) ? isSelected : item.isSelected; 
-                       const selectedItem = {id: id, name: name, isSelected: isSelected};                               
-                       return selectedItem;
-                   }
-                   return item;
-               });
-               const newSection = {id: section.id, section: section.section, items: items};
-               return newSection;
-           } else {
-               return section;
-           }
-       });
-
-       return list;
-    }
-    
+        
     // добавление-удаление продукта из таблицы
     changeSelection(id, idSection, isSelected) {
         this.setState(state => {
@@ -142,22 +122,6 @@ class App extends React.Component {
         });
     }
     
-    // меняем название секции
-    changeNameSection(idSection, name) {
-        this.setState(state => {
-           const list = state.list.map(section => {
-               if (section.id === idSection) {
-                   const newSection = {id: idSection, section: name, items: section.items};
-                   return newSection;
-               } else {
-                   return section;
-               }
-           });
-
-           return {list};
-        });
-    }
-    
     // добавление нового продукта
     addItem(id, idSection, name) {
         this.setState(state => {
@@ -177,10 +141,60 @@ class App extends React.Component {
         });
     }
     
+    // удаляем продукт
+    deleteItem(id, idSection) {
+        this.setState(state => {
+            const list = state.list.map(section => {
+                if (section.id === idSection) {
+                    const items = section.items.filter(item => {
+                        if (item.id !== id) {
+                            return item;
+                        }
+                    });
+                    const newSection = {id: section.id, section: section.section, items: items};
+                    return newSection;
+                } else {
+                    return section;
+                }
+            });
+           
+            return {list};
+        });
+    }
+    
+    // меняем название секции
+    changeNameSection(id, name) {
+        this.setState(state => {
+           const list = state.list.map(section => {
+               if (section.id === id) {
+                   const newSection = {id: id, section: name, items: section.items};
+                   return newSection;
+               } else {
+                   return section;
+               }
+           });
+
+           return {list};
+        });
+    }
+    
     // добавление нового раздела
     addSection(id, name) {
         let section = {id: id, section: name, items: []};
         this.setState({list: [...this.state.list, section]});
+    }
+    
+    // удаление раздела
+    deleteSection(id) {
+        this.setState(state =>{
+           const list = state.list.filter(section => {
+               if (section.id !== id) {
+                   return section;
+               }
+           }) 
+           
+           return {list};
+        });
     }
     
     render() {
@@ -194,7 +208,8 @@ class App extends React.Component {
                         ) : (
                             <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
                                 changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
-                                addItem={this.addItem} addSection={this.addSection}/>
+                                addItem={this.addItem} addSection={this.addSection}
+                                deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
                         )
                     }            
                     <Table data={this.state.list} handleClick={this.changeSelection}/>

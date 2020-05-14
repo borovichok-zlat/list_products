@@ -61,17 +61,22 @@ class Item extends React.Component {
         super(props);
         
         this.handleClick = this.handleClick.bind(this);
+        this.handleClickDelete = this.handleClickDelete.bind(this);
     }
     
     handleClick(event) {
         handleClick(event.target, true, "edit", this.props.changeNameItem, this.props.id, this.props.idSection);
     }
     
+    handleClickDelete(event) {
+        this.props.deleteItem(this.props.id, this.props.idSection);    
+    }
+    
     render() {
         return (
             <div className="borderDiv">
               <div className="view" onClick={this.handleClick}>{this.props.name}</div>
-              <ButtonDelete name={this.props.name} />   
+              <button className="deleteButton" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
             </div>
         );
     }
@@ -102,6 +107,7 @@ class Summary extends React.Component {
         super(props);
         
         this.handleClick = this.handleClick.bind(this);
+        this.handleClickDelete = this.handleClickDelete.bind(this);
     }
     
     handleClick(event) {
@@ -109,11 +115,16 @@ class Summary extends React.Component {
         event.preventDefault();
     }
     
+    handleClickDelete(event) {
+        this.props.deleteSection(this.props.idSection);
+        event.preventDefault();
+    }
+    
     render() {
         return (
             <summary>
                 <div className="viewTop" onClick={this.handleClick}>{this.props.name}</div> 
-                <ButtonDelete name={this.props.name} section={true}/>
+                <button className="deleteButton" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
             </summary>
         );
     }
@@ -159,11 +170,13 @@ class List extends React.Component {
         
         return (
             <details>
-                <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}/>
+                <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}
+                        deleteSection={this.props.deleteSection}/>
                 {
                     items.map((item) =>                     
                        <Item key={item.id} id={item.id} name={item.name} isSelected={item.isSelected}
-                                    idSection={this.props.idSection} changeNameItem={this.props.changeNameItem}/>
+                                    idSection={this.props.idSection} changeNameItem={this.props.changeNameItem}
+                                    deleteItem={this.props.deleteItem}/>
                     )
                 }
                 <NewItem key={id} id={id} idSection={this.props.idSection} addItem={this.props.addItem}/>
@@ -196,7 +209,8 @@ class EditorLeftsidebar extends React.Component {
                     data.map((items) => 
                         <List key={items.id} name={items.section} items={items.items} idSection={items.id}
                             changeNameItem={this.props.changeNameItem} changeNameSection={this.props.changeNameSection}
-                            addItem={this.props.addItem}/>          
+                            addItem={this.props.addItem} deleteSection={this.props.deleteSection}
+                            deleteItem={this.props.deleteItem}/>          
                     )
                 }
                 <NewSummary id={id} addSection={this.props.addSection}/>  
