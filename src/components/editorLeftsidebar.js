@@ -3,6 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 import deleteIcon from '../styles/img/deletesweep24px.svg';
+import closeIcon from '../styles/img/close.png';
 
 //---- input ----//
 function handleClick(view, isValue, className, callback, ...args) {
@@ -204,6 +205,7 @@ class EditorLeftsidebar extends React.Component {
         
        return (
             <section className="sidebar_left">
+              <button className="closeButton" onClick={this.handleClick}><img src={closeIcon} className="closeIcon"/></button>
               <ul>
                 {
                     data.map((items) => 
@@ -215,7 +217,6 @@ class EditorLeftsidebar extends React.Component {
                 }
                 <NewSummary id={id} addSection={this.props.addSection}/>  
               </ul>
-              <button onClick={this.handleClick}>Закончить редактирование</button>    
             </section>
         );
     }
