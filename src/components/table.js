@@ -54,7 +54,7 @@ class Tabel extends React.Component {
                                     <tr key={product.id} id={product.id} data-idsection={product.idSection}>
                                         <td>{product.name}</td>
                                         <td>
-                                            <input type="number" name={'amount'}/>
+                                            <input type="number" name={'amount'} defaultValue="1"/>
                                         </td>
                                         <td>
                                             <input type="text" name={'note'}/>

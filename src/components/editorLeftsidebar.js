@@ -32,31 +32,6 @@ function handleClick(view, isValue, className, callback, ...args) {
     };
 }
 
-//---- кнопка удаления раздела или продукта ----//
-class ButtonDelete extends React.Component {
-    constructor(props) {
-        super(props);
-       
-        this.handleClick = this.handleClick.bind(this);
-    }
-    
-    handleClick(event) {        
-        if (this.props.section === true) {
-            alert('delete section: ' + this.props.name);
-        } else {
-            alert('delete product: ' + this.props.name);
-        }
-        
-        event.preventDefault();
-    }
-    
-    render() {
-        return (
-            <button className="deleteButton" onClick={this.handleClick}><img src={deleteIcon} className="deleteIcon"/></button>
-        );
-    }
-}
-
 class Item extends React.Component {
     constructor(props) {
         super(props);
@@ -160,15 +135,16 @@ class List extends React.Component {
     
     render() {
         const items = this.props.items;
-        let index, id;
+        let num, index, id;
         if (items.length > 0) {
             index = items[0].id.lastIndexOf("_");
-            id = items[0].id.substr(0, index + 1) + (items.length + 1);
+            num = Number(items[items.length - 1].id.substr(index + 1)) + 1;
+            id = items[0].id.substr(0, index + 1) + num;
         } else {
             index = this.props.idSection;
             id = index + "_1";
-        }        
-        
+        }
+                
         return (
             <details>
                 <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}
@@ -199,9 +175,10 @@ class EditorLeftsidebar extends React.Component {
     }
     
     render() {
-       const data = this.props.data;
-       let index = data[0].id.lastIndexOf("_");
-       let id = data[0].id.substr(0, index + 1) + (data.length + 1);    
+        const data = this.props.data;
+        let index = data[0].id.lastIndexOf("_");
+        let num = Number(data[data.length - 1].id.substr(index + 1)) + 1;
+        let id = data[0].id.substr(0, index + 1) + num;    
         
        return (
             <section className="sidebar_left">
