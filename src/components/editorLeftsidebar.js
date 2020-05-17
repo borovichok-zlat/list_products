@@ -1,6 +1,8 @@
 //---- класс редактирования списка продуктов для добавления в таблицу ----//
 import React from "react";
 import ReactDOM from "react-dom";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
 import '../styles/index.css';
 import deleteIcon from '../styles/img/deletesweep24px.svg';
 import closeIcon from '../styles/img/close.png';
@@ -45,7 +47,26 @@ class Item extends React.Component {
     }
     
     handleClickDelete(event) {
-        this.props.deleteItem(this.props.id, this.props.idSection);    
+        if (this.props.isSelected) {
+            const deleteItem = () => {this.props.deleteItem(this.props.id, this.props.idSection)};
+            const options = {
+                message: 'Данный продукт находится в списке покупок. Вы действительно хотите его удалить?',
+                buttons: [
+                    {
+                        label: 'Удалить',
+                        onClick: deleteItem
+                    },
+                    {
+                        label: 'Не удалять'
+                    }
+                ],
+                closeOnEscape: false,
+                closeOnClickOutside: false
+            };
+            confirmAlert(options);
+        } else {
+            this.props.deleteItem(this.props.id, this.props.idSection);
+        }
     }
     
     render() {
@@ -92,7 +113,26 @@ class Summary extends React.Component {
     }
     
     handleClickDelete(event) {
-        this.props.deleteSection(this.props.idSection);
+        if (this.props.isSelectedProduct) {
+            const deleteSection = () => {this.props.deleteSection(this.props.idSection)};
+            const options = {
+                message: 'Продукты из данного раздела находится в списке покупок. Вы действительно хотите его удалить?',
+                buttons: [
+                    {
+                        label: 'Удалить',
+                        onClick: deleteSection
+                    },
+                    {
+                        label: 'Не удалять'
+                    }
+                ],
+                closeOnEscape: false,
+                closeOnClickOutside: false
+            };
+            confirmAlert(options);
+        } else {
+            this.props.deleteSection(this.props.idSection);
+        }
         event.preventDefault();
     }
     
@@ -144,11 +184,19 @@ class List extends React.Component {
             index = this.props.idSection;
             id = index + "_1";
         }
+        
+        let isSelectedProduct = false;
+        for (let i = 0; i < items.length; i++) {
+            if (items[i].isSelected) {
+                isSelectedProduct = true;
+                break;
+            }
+        }
                 
         return (
             <details>
                 <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}
-                        deleteSection={this.props.deleteSection}/>
+                        deleteSection={this.props.deleteSection} isSelectedProduct={isSelectedProduct}/>
                 {
                     items.map((item) =>                     
                        <Item key={item.id} id={item.id} name={item.name} isSelected={item.isSelected}
