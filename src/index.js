@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Topbar from "./components/topbar.js";
 import Leftsidebar from "./components/leftsidebar.js";
-import Table from "./components/table.js";
+import Main from "./components/table.js";
 import EditorLeftsidebar from "./components/editorLeftsidebar.js";
 import './styles/index.css';
 
@@ -212,7 +212,7 @@ class App extends React.Component {
                                 deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
                         )
                     }            
-                    <Table data={this.state.list} handleClick={this.changeSelection}/>
+                    <Main data={this.state.list} handleClick={this.changeSelection}/>
                 </section>    
             </div>    
         );

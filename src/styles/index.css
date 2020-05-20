@@ -155,12 +155,19 @@ input[type=text] {
 
 /*----------------------------------*/
 .main {
-    left: 40%; 
+    left: 38%;
+    width: 60%;
     height: 85%;
     position: fixed;
     border: 2px solid #9799a7;
 }
 
+.sectionTable {
+    height: 100%;
+    display: inline-block;
+    border: 2px solid red;
+    overflow-y: auto;
+}
 .table {
     border: 2px solid #9799a7;
     border-collapse: collapse;
@@ -178,6 +185,35 @@ input[type=text] {
 
 .table caption {
     border: 2px solid #9799a7;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+}
+
+.mainButton {
+    display: inline-block;
+    margin: 5px;
+    border: 2px solid #9799a7;
+}
+
+.mainSection {
+    display: inline-block;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    border: 2px solid red;
+    background: orange;
+}
+
+@media print {
+  * {
+    display: none;
+  }
+  #printableTable {
+    display: block;
+  }
 }
 
 /*----------------------------------*/
@@ -233,3 +269,5 @@ input[type=text] {
     top: 0;
     right: 0;
 }
+
+
