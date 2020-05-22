@@ -17,7 +17,6 @@ class Topbar extends React.Component {
     render() {
         return (
             <section className="topbar">
-              <p>Меню списка покупок</p>
              <button onClick={this.handleClick}>
                 <img src={editorIcon} className="deleteIcon"/>
              </button>

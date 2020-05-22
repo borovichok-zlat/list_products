@@ -6,18 +6,19 @@ import printIcon from '../styles/img/print.png';
 import mailIcon from '../styles/img/mail.png';
 
 //---- input ----//
-function handleClick(type, view/*, isValue, className, callback, ...args*/) {
+function handleClick(type, view, callback, ...args) {
     let input = document.createElement("input");
     input.type = type;
     if (type === 'number') {
         input.defaultValue = "1";
         input.min = "1";
     }
-    input.value = view.innerHTML;
+    input.value = view.innerHTML.trim();
     
     input.onblur = () => {
         input.replaceWith(view);
         view.innerHTML = input.value;
+        callback(...args, input.value);
     };
 
     view.replaceWith(input);
@@ -35,12 +36,18 @@ class Table extends React.Component {
     }
     
     handleChangeAmount(event) {
-        handleClick('number', event.target);
+        let target = event.target;
+        let idproduct = event.target.dataset.idproduct;
+        let idsection = event.target.dataset.idsection;
+        handleClick('number', event.target, this.props.changeAmount, idproduct, idsection);
     //    event.preventDefault();
     }
     
     handleChangeNote(event) {
-        handleClick('text', event.target);
+        let target = event.target;
+        let idproduct = event.target.dataset.idproduct;
+        let idsection = event.target.dataset.idsection;
+        handleClick('text', event.target, this.props.changeNote, idproduct, idsection);
     //    event.preventDefault();
     }
     
@@ -62,8 +69,10 @@ class Table extends React.Component {
                                 return (
                                     <tr key={product.id} id={product.id} data-idsection={product.idSection}>
                                         <td>{product.name}</td>
-                                        <td onClick={this.handleChangeAmount}>1</td>
-                                        <td onClick={this.handleChangeNote}></td>
+                                        <td onClick={this.handleChangeAmount} data-idproduct={product.id} data-idsection={product.idSection}>       {product.amount}
+                                        </td>
+                                        <td onClick={this.handleChangeNote} data-idproduct={product.id} data-idsection={product.idSection}>         {product.note}
+                                        </td>
                                         <td>
                                             <button onClick={this.handleClick}>
                                                 <img src={deleteIcon} className="deleteIcon"/>
@@ -126,14 +135,16 @@ class Main extends React.Component {
             for (let j = 0; j < this.props.data[i].items.length; j++) {
                 const items = this.props.data[i].items;
                 if (items[j].isSelected === true) {
-                    products.push({id: items[j].id, name: items[j].name, idSection: this.props.data[i].id});
+                    products.push({id: items[j].id, name: items[j].name, amount: items[j].amount, note: items[j].note,
+                                   idSection: this.props.data[i].id});
                 }
             }
         }
 
         return (
             <section className="main">
-                <Table products={products} handleClick={this.props.handleClick}/>    
+                <Table products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} 
+                        changeAmount={this.props.changeAmount}/>    
                 <Footer />
             </section>
         );
