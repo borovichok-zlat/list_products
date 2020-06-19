@@ -249,11 +249,12 @@ class App extends React.Component {
     render() {
         return (
             <div>    
-                <Topbar handleClick={this.handleClickHideEditor}/>
+                <Topbar/>
                 <section> 
                     {
                         this.state.hideEditor ? (
-                            <Leftsidebar data={this.state.list} handleInputChange={this.changeSelection}/>
+                            <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
+                                handleInputChange={this.changeSelection}/>
                         ) : (
                             <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
                                 changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}

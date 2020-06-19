@@ -231,7 +231,6 @@ class EditorLeftsidebar extends React.Component {
        return (
             <section className="sidebar_left">
               <button className="closeButton" onClick={this.handleClick}><img src={closeIcon} className="closeIcon"/></button>
-              <ul>
                 {
                     data.map((items) => 
                         <List key={items.id} name={items.section} items={items.items} idSection={items.id}
@@ -241,7 +240,6 @@ class EditorLeftsidebar extends React.Component {
                     )
                 }
                 <NewSummary id={id} addSection={this.props.addSection}/>  
-              </ul>
             </section>
         );
     }

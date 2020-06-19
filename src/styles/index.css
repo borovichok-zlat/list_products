@@ -59,6 +59,9 @@ body {
   padding-top: 20px;   
   padding-bottom: 20px;    
 }
+.topbarBtn {
+    margin: 0 5px;
+}
 
 /*----------------------------------*/
 .sidebar_left{

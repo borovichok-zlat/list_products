@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
 import deleteIcon from '../styles/img/deletesweep24px.svg';
+import editorIcon from '../styles/img/editor.png';
 
 //---- чекбоксы для выбора продуктов ----//
 class CheckBox extends React.Component {
@@ -52,18 +53,26 @@ class List extends React.Component {
 
 //---- левое меню ----//
 class Leftsidebar extends React.Component {   
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+    
+    handleClick() {
+       this.props.handleClick(false); 
+    }
+    
     render() {
        const data = this.props.data;
        return (
             <section className="sidebar_left">
-              <ul>
+                <button className="closeButton" onClick={this.handleClick}><img src={editorIcon} className="closeIcon"/></button>
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.section} items={products.items} idSection={products.id}
                               handleInputChange={this.props.handleInputChange}/>
                     )
                 }
-              </ul>
             </section>
         );
     }
