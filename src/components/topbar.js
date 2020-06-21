@@ -32,11 +32,11 @@ class Topbar extends React.Component {
     
     render() {
         return (
-            <section className="topbar">
-                <button className="topbarBtn">создать список</button>
-                <button className="topbarBtn">открыть</button>
-                <button className="topbarBtn">сохранить</button>
-                <button className="topbarBtn" onClick={this.handleClickPrint}>печать</button>
+            <section className="menu">
+                <button className="menuBtn">создать список</button>
+                <button className="menuBtn">открыть</button>
+                <button className="menuBtn">сохранить</button>
+                <button className="menuBtn" onClick={this.handleClickPrint}>печать</button>
                 <iframe name="print_frame" width="0" height="0" frameBorder="0" src="about:blank"></iframe>
             </section>
         );

@@ -4,8 +4,8 @@ import ReactDOM from "react-dom";
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import '../styles/index.css';
-import deleteIcon from '../styles/img/deletesweep24px.svg';
-import closeIcon from '../styles/img/close.png';
+import deleteIcon from '../styles/img/delete2.png';
+import listIcon from '../styles/img/list.png';
 
 //---- input ----//
 function handleClick(view, isValue, className, callback, ...args) {
@@ -43,7 +43,7 @@ class Item extends React.Component {
     }
     
     handleClick(event) {
-        handleClick(event.target, true, "edit", this.props.changeNameItem, this.props.id, this.props.idSection);
+        handleClick(event.target, true, "inputElement", this.props.changeNameItem, this.props.id, this.props.idSection);
     }
     
     handleClickDelete(event) {
@@ -71,9 +71,9 @@ class Item extends React.Component {
     
     render() {
         return (
-            <div className="borderDiv">
-              <div className="view" onClick={this.handleClick}>{this.props.name}</div>
-              <button className="deleteButton" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
+            <div className="editDiv">
+              <div className="editElement" onClick={this.handleClick}>{this.props.name}</div>
+              <button className="deleteBtn" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
             </div>
         );
     }
@@ -87,13 +87,13 @@ class NewItem extends React.Component {
     }
     
     handleClick(event) {
-        handleClick(event.target, false, "edit", this.props.addItem, this.props.id, this.props.idSection);
+        handleClick(event.target, false, "inputElement", this.props.addItem, this.props.id, this.props.idSection);
     }
     
     render() {
         return (
-            <div className="borderDiv">
-              <div className="view" onClick={this.handleClick}>Введите название продукта</div>
+            <div className="editDiv">
+              <div className="editElement" onClick={this.handleClick}>Введите название продукта</div>
             </div>
         );
     }
@@ -108,7 +108,7 @@ class Summary extends React.Component {
     }
     
     handleClick(event) {
-        handleClick(event.target, true, "editTop", this.props.changeNameSection, this.props.idSection);
+        handleClick(event.target, true, "inputElement", this.props.changeNameSection, this.props.idSection);
         event.preventDefault();
     }
     
@@ -138,9 +138,9 @@ class Summary extends React.Component {
     
     render() {
         return (
-            <summary>
-                <div className="viewTop" onClick={this.handleClick}>{this.props.name}</div> 
-                <button className="deleteButton" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
+            <summary>            
+                <div className="editSummary" onClick={this.handleClick}>{this.props.name}</div> 
+                <button className="deleteBtnSummary" onClick={this.handleClickDelete}><img src={deleteIcon} className="deleteIcon"/></button>   
             </summary>
         );
     }
@@ -155,13 +155,14 @@ class NewSummary extends React.Component {
     }
     
     handleClick(event) {
-        handleClick(event.target, false, "editTop", this.props.addSection, this.props.id);                
+        handleClick(event.target, false, "inputElement", this.props.addSection, this.props.id);                
     }
     
     render() {
         return (
-            <div className="addSection">
-                <div className="viewTop" onClick={this.handleClick}>Добавить новый раздел</div>
+            <div className="divNewSummary"> 
+                +&nbsp;
+                <div className="editSummary" onClick={this.handleClick}>Добавить новый раздел</div>
             </div>
         );
     }
@@ -197,14 +198,16 @@ class List extends React.Component {
             <details>
                 <Summary name={this.props.name} idSection={this.props.idSection} changeNameSection={this.props.changeNameSection}
                         deleteSection={this.props.deleteSection} isSelectedProduct={isSelectedProduct}/>
-                {
-                    items.map((item) =>                     
-                       <Item key={item.id} id={item.id} name={item.name} isSelected={item.isSelected}
-                                    idSection={this.props.idSection} changeNameItem={this.props.changeNameItem}
-                                    deleteItem={this.props.deleteItem}/>
-                    )
-                }
-                <NewItem key={id} id={id} idSection={this.props.idSection} addItem={this.props.addItem}/>
+                <div className="divCheckboxes">
+                    {
+                        items.map((item) =>                     
+                           <Item key={item.id} id={item.id} name={item.name} isSelected={item.isSelected}
+                                        idSection={this.props.idSection} changeNameItem={this.props.changeNameItem}
+                                        deleteItem={this.props.deleteItem}/>
+                        )
+                    }
+                    <NewItem key={id} id={id} idSection={this.props.idSection} addItem={this.props.addItem}/>
+                </div>    
             </details>
         );
     }
@@ -229,8 +232,8 @@ class EditorLeftsidebar extends React.Component {
         let id = data[0].id.substr(0, index + 1) + num;    
         
        return (
-            <section className="sidebar_left">
-              <button className="closeButton" onClick={this.handleClick}><img src={closeIcon} className="closeIcon"/></button>
+            <section className="sidebar">
+              <button className="editorListBtn" onClick={this.handleClick}><img src={listIcon} className="icon"/></button>
                 {
                     data.map((items) => 
                         <List key={items.id} name={items.section} items={items.items} idSection={items.id}

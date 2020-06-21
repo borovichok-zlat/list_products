@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Topbar from "./components/topbar.js";
-import Leftsidebar from "./components/leftsidebar.js";
 import Main from "./components/table.js";
 import EditorLeftsidebar from "./components/editorLeftsidebar.js";
+import Leftsidebar from "./components/leftsidebar.js";
 import './styles/index.css';
 
 let list = [
@@ -248,23 +248,21 @@ class App extends React.Component {
    
     render() {
         return (
-            <div>    
+            <div className="divRoot">    
                 <Topbar/>
-                <section> 
-                    {
-                        this.state.hideEditor ? (
-                            <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
-                                handleInputChange={this.changeSelection}/>
-                        ) : (
-                            <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
-                                changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
-                                addItem={this.addItem} addSection={this.addSection}
-                                deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
-                        )
-                    }            
-                    <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
-                        changeAmount={this.changeAmount}/>
-                </section>    
+                <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
+                            changeAmount={this.changeAmount}/>
+                {
+                    this.state.hideEditor ? (
+                        <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
+                            handleInputChange={this.changeSelection}/>
+                    ) : (
+                        <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
+                            changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
+                            addItem={this.addItem} addSection={this.addSection}
+                            deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
+                    )
+                }              
             </div>    
         );
     }

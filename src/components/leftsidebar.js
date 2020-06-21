@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import '../styles/index.css';
-import deleteIcon from '../styles/img/deletesweep24px.svg';
 import editorIcon from '../styles/img/editor.png';
 
 //---- чекбоксы для выбора продуктов ----//
@@ -20,10 +19,12 @@ class CheckBox extends React.Component {
     
     render() {
         return (
-            <div className="borderDiv">
-              <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
-                     onChange={this.handleInputChange} data-name={this.props.name} data-idsection={this.props.idSection}/>
-              <label>{this.props.name}</label>
+            <div className="divCheckboxes">
+                <label className="labelCheckbox">
+                    <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
+                        onChange={this.handleInputChange} data-name={this.props.name} data-idsection={this.props.idSection}/>
+                    <div className="checkbox_text">{this.props.name}</div>
+                </label>
             </div>
         );
     }
@@ -40,12 +41,14 @@ class List extends React.Component {
         return (
             <details>
                 <summary>{this.props.name}</summary>
-                {
-                    items.map((product) => 
-                        <CheckBox key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
-                                    idSection={this.props.idSection} handleInputChange={this.props.handleInputChange}/>
-                    )
-                }
+                <div className="divCheckboxes">
+                    {
+                        items.map((product) => 
+                            <CheckBox key={product.id} id={product.id} name={product.name} isSelected={product.isSelected}
+                                        idSection={this.props.idSection} handleInputChange={this.props.handleInputChange}/>
+                        )
+                    }
+                </div>    
             </details>
         );
     }
@@ -65,8 +68,8 @@ class Leftsidebar extends React.Component {
     render() {
        const data = this.props.data;
        return (
-            <section className="sidebar_left">
-                <button className="closeButton" onClick={this.handleClick}><img src={editorIcon} className="closeIcon"/></button>
+            <section className="sidebar">
+                <button className="editorListBtn" onClick={this.handleClick}><img src={editorIcon} className="icon"/></button>
                 {
                     data.map((products) => 
                         <List key={products.id} name={products.section} items={products.items} idSection={products.id}

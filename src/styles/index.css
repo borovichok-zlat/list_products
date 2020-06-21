@@ -1,5 +1,5 @@
 /* http://meyerweb.com/eric/tools/css/reset/ 2. v2.0 | 20110126
-  License: none (public domain)
+License: none (public domain)
 */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -14,201 +14,300 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-  display: block;
+    display: block;
 }
 body {
-  line-height: 1;
+    line-height: 1;
 }
 ol, ul {
-  list-style: none;
+    list-style: none;
 }
 blockquote, q {
-  quotes: none;
+    quotes: none;
 }
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
-  content: none;
+    content: '';
+    content: none;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 /*--------------------------------*/
 
-body {
-  background-color: cyan;
+body { 
+    background: linear-gradient(160deg, white, 60%, #98e8e5);
+    font: 16px Helvetica, sans-serif;
 }
 
-/*----------------------------------*/
-.topbar{
-  height: 10%;
-  background: #ddd;
-  border-bottom: 1px #aaa solid;
-  width: 100%;
-  padding-top: 20px;   
-  padding-bottom: 20px;    
-}
-.topbarBtn {
-    margin: 0 5px;
-}
-
-/*----------------------------------*/
-.sidebar_left{
-  overflow-y: auto;
-  width: 30%;    
-  position: fixed;
-  height: 85%;
-  background: #f0f0f0;
-  border-right: 3px #aaa solid;
-  padding-right: 30px; 
-  padding-left: 30px;
-  padding-top: 5px;
-  padding-bottom: 10px;
+.divRoot {
+    display: grid;
+    grid-template-areas: 
+    "sidebar menu menu"
+    "sidebar main main"
+    "sidebar main main";
+    grid-template-rows: 50px 1fr 1fr;  
+    grid-template-columns: 0.8fr 1fr 1fr;
+    grid-row-gap: 0px;
+    grid-column-gap: 0px;
+    height: 100vh;
+    margin: 0;
 }
 
-/* accordeon */
-details, .addSection {
-    position: relative;
-    border: 1px solid #E1E1E1;
+/*scroll*/
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    background-color: #F5F5F5;
+    border-radius: 6px;
+}
+::-webkit-scrollbar {
+    width: 6px;
+    background-color: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-image: -webkit-gradient(linear,
+                                       left bottom,
+                                       left top,
+                                       color-stop(0.44, #94bed6),
+                                       color-stop(0.86, #76b3e8));
+}
+
+.menuBtn, .editorListBtn {
+    outline: none !important;
+    border: none !important;
+    background-color: transparent;
     border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
-    color: #363636;
-    margin: 0 0 .4em;
-    padding: 1%;
-    top: 20px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);  
 }
-details[open] {
-    background: #E1E1E1;
+.menuBtn:active, .editorListBtn:active {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, .6);
 }
-summary {
-    position: relative;
-    background: -webkit-linear-gradient(top, #FAFAFA 50%, #E1E1E1 50%);
-    border-radius: 5px;
-    border-width: 2px;
-    border-color: crimson;
-    cursor: pointer;
-    font-size: .8em;
-    font-weight: bold;
-    margin: -1%;
-    padding: 8px 0;
-    width: 102%;
+
+/*------------------------*/
+
+.menu {
+    grid-area: menu;
+    display: flex;
+    flex-wrap: wrap;
 }
-summary:hover, details[open] summary {
-    background: #E1E1E1;
-}
-summary::-webkit-details-marker {
-    display: none
-}
-summary::before{
-    border-radius: 5px;
-    content: "+";
-    color: #363636;
-    display: block;
-    float: left;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin: -2px 10px 0 10px;
-    padding: 0;
+
+.menuBtn {
+    margin: 5px;
+    font: 16px Helvetica, sans-serif;
     text-align: center;
-    width: 20px;
-}
-details[open] summary::before {
-    content: "-";
-    margin-top: -4px;
-}
-p {
-    font-size: .8em;
 }
 
-/*checkbox*/
-label {
-    font: 1rem 'Fira Sans', sans-serif;
-}
+/*------------------------*/
 
-input[type=text] {
-    margin: 2px; 
-    padding: 2px;
-    width: 95%;
-}
-
-/*deleteButton*/
-.deleteIcon {
-    width: 16px;
-    height: 16px;
-}
-.deleteButton {
-    margin-right: 0;
-    margin-left: 10px;
-}
-
-.borderDiv {
-    border: 2px solid #9799a7;
-}
-
-/*----------------------------------*/
-.main {
-    left: 38%;
-    width: 60%;
-    height: 85%;
-    position: fixed;
-    border: 2px solid #9799a7;
-}
-
-.sectionTable {
-    height: 100%;
-    display: inline-block;
-    border: 2px solid red;
+.main { 
+    grid-area: main; 
+    text-align: center;
+    font: 16px Helvetica, sans-serif;
     overflow-y: auto;
-}
-.table {
-    border: 2px solid #9799a7;
-    border-collapse: collapse;
-    background-color: bisque;
     margin: 10px;
 }
-.table td {
-    border: 2px solid #9799a7;
-    padding: 2px;
+
+.table {
+    position: relative;
+    margin: 0 5px;
+    border: 1px solid #59a5e6;
 }
-.table th {
-    border: 2px solid #9799a7;
-    padding: 2px;
+.table td, .table th, .table caption {
+    border: 1px solid #59a5e6;
+    vertical-align: middle;
+    padding: 3px;
+}
+
+.table td {
+    width: 150px;
 }
 
 .table caption {
-    border: 2px solid #9799a7;
+    border-bottom: transparent;
 }
 
-.icon {
-    width: 16px;
-    height: 16px;
+.tableInput {
+    position: relative;
+    outline: none !important;
+    border: 1px solid #59a5e6;
+    margin: 6px 0 0;
+    width: 140px;
+    font: 16px Helvetica, sans-serif;
 }
 
-.mainButton {
-    display: inline-block;
-    margin: 5px;
-    border: 2px solid #9799a7;
+/*------------------------*/
+.sidebar { 
+    grid-area: sidebar; 
+    overflow: auto;
+    position: relative;
+    margin-bottom: 10px;
 }
 
-.mainSection {
-    display: inline-block;
+/* accordeon */
+details {
+    position: relative;
+    top: 37px;
+}
+
+details summary {
+    display: block;
+    outline-style: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
+    margin: 0 5px 8px;
+    padding: 0.5em;
+}
+details summary::-webkit-details-marker {
+    display: none;
+}
+details summary::before {
+    content: "+ ";
+}
+details[open] summary::before {
+    content: "- ";
+}
+details summary:hover, .labelCheckbox:hover, .editDiv:hover {
+    background: #bef1ef;
+}
+
+.divCheckboxes {
+    margin: 5px 8px 10px;
+}
+
+.labelCheckbox {
+    display: block;
+}
+
+input[type="checkbox"] { display: none; }
+
+.checkbox_text {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    margin-bottom: 10px;
+}
+
+.checkbox_text:after {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #6cc0e5;
     position: absolute;
-    bottom: 10px;
-    right: 10px;
-    border: 2px solid red;
-    background: orange;
+    left: 0;
+    top: 0;
 }
+
+.labelCheckbox input:checked + .checkbox_text:after {
+    width: 7px;
+    height: 17px;
+    top: -7px;
+    left: 5px;
+    border: 2px solid #6cc0e5;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.divNewSummary {
+    position: relative;
+    top: 37px;
+    outline-style: none;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
+    margin: 0 5px 8px;
+    padding: 0.5em;
+}
+
+.icon, .deleteIcon {
+    width: 20px;
+    height: 20px;
+}
+.deleteIcon {
+    position: relative;
+    right:5px;
+}
+
+/*кнопка редактора-списка*/
+.editorListBtn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+/*editor*/
+.editDiv {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    margin-top: 13px;
+    border: 1px solid black;
+}
+
+.editSummary, .editElement {
+    border: 1px solid #59a5e6;
+    padding: 3px;  
+}
+.editSummary {
+    display: inline-block;
+    min-width: 80%;
+}
+.editElement {
+    width: 80%;
+    margin: 3px;
+}
+
+.deleteBtnSummary {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+}
+.deleteBtn {
+    margin-top: 3px;
+}
+.deleteBtnSummary, .deleteBtn {
+    outline: none !important;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 1px solid #59a5e6;
+    width: 24px;
+    height: 24px;
+}
+.deleteBtn:active, .deleteBtnSummary:active {
+    border: 2px solid #59a5e6;
+}
+.deleteBtnTable {
+    width: 28px;
+    height: 28px;
+    padding-left: 8px;
+    margin-top: 0px;
+}
+.inputElement {
+    outline: none !important;
+    border: 1px solid #59a5e6;
+    padding: 3px;
+    width: 80%;
+    margin: 3px;
+    font: 16px Helvetica, sans-serif;
+}
+/*------------------------*/
 
 @media print {
   * {
@@ -218,59 +317,3 @@ input[type=text] {
     display: block;
   }
 }
-
-/*----------------------------------*/
-
-/* editorLeftSidebar */
-.view,
-.edit,
-.viewTop, 
-.editTop {
-  width: 70%; 
-  height: 16px;    
-  font-family: sans-serif;
-  font-size: 14px;
-  display: inline-block;
-}
-
-.view,
-.viewTop {
-  padding: 2px;
-  border: 1px solid black;
-}
-
-.edit,
-.editTop {
-  max-width: 70%;   
-  border: 1px solid green;
-  padding: 0px;
-}
-
-.edit:focus,
-.editTop:focus {
-  /* удаление обводки фокуса в Safari */
-  outline: none;
-}
-
-.viewTop,
-.editTop {
-  width: 60%; 
-}
-
-.editTop {
-  max-width: 60%;   
-  border: 1px solid green;
-  padding: 0px;
-}
-
-.closeIcon {
-    width: 16px;
-    height: 16px;
-}
-.closeButton {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-
