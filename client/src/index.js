@@ -49,7 +49,7 @@ class App extends React.Component {
         let list = this.state.list;
         
         for (i = 0; i < list.length; i++) {
-            if (list[i].id === idSection) {
+            if (list[i]._id === idSection) {
                 for (j = 0; j < list[i].items.length; j++) {
                     if (list[i].items[j].id === id) {
                         const item = list[i].items[j];
@@ -115,7 +115,7 @@ class App extends React.Component {
         let list = this.state.list;
         
         for (i = 0; i < list.length; i++) {
-            if (list[i].id === idSection) {
+            if (list[i]._id === idSection) {
                 let item = {id: id, name: name, isSelected: false, note: "", amount: 1};
                 let items = [...list[i].items, item];
 
@@ -129,7 +129,7 @@ class App extends React.Component {
                 })
                 .then(response => response.json())
                 .then(item => {
-                    const newSection = {_id: list[i]._id, id: idSection, section: list[i].section, items: items};
+                    const newSection = {_id: list[i]._id, section: list[i].section, items: items};
                     list[i] = newSection;
                     this.setState({list: [...list]});
                 })
@@ -146,7 +146,7 @@ class App extends React.Component {
         let list = this.state.list;
         
         for (i = 0; i < list.length; i++) {
-            if (list[i].id === idSection) {
+            if (list[i]._id === idSection) {
                 for (j = 0; j < list[i].items.length; j++) {
                     if (list[i].items[j].id === id) {
                         let data = {_id: list[i]._id, item: list[i].items[j]};
@@ -177,7 +177,7 @@ class App extends React.Component {
         let list = this.state.list;
         
         for (i = 0; i < list.length; i++) {
-            if (list[i].id === id) {
+            if (list[i]._id === id) {
                 let data = {_id: list[i]._id,  section: name};
                 fetch("api/changeNameSection", {
                     method: 'PUT',
@@ -199,8 +199,8 @@ class App extends React.Component {
     }
     
     // добавление нового раздела
-    addSection(id, name) {
-        let section = {id: id, section: name, items: []};
+    addSection(name) {
+        let section = {section: name, items: []};
         fetch("api/addSection",{
             method: 'POST',
             headers: {
@@ -218,7 +218,7 @@ class App extends React.Component {
     deleteSection(id) {
         this.setState(state => {
             const list = state.list.filter(section => {
-                if (section.id !== id) {
+                if (section._id !== id) {
                     return section;
                 } else {
                     fetch("/api/section/"+section._id, {

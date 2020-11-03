@@ -157,7 +157,7 @@ class NewSummary extends React.Component {
     }
     
     handleClick(event) {
-        handleClick(event.target, false, "inputElement", this.props.addSection, this.props.id);                
+        handleClick(event.target, false, "inputElement", this.props.addSection);                
     }
     
     render() {
@@ -231,22 +231,22 @@ class EditorLeftsidebar extends React.Component {
     
     render() {
         const data = this.props.data;
-        let index = data[0].id.lastIndexOf("_");
+       /* let index = data[0].id.lastIndexOf("_");
         let num = Number(data[data.length - 1].id.substr(index + 1)) + 1;
-        let id = data[0].id.substr(0, index + 1) + num;    
+        let id = data[0].id.substr(0, index + 1) + num;  */  
         
        return (
             <section className="sidebar">
               <button className="editorListBtn" onClick={this.handleClick}><img src={listIcon} className="icon" alt=""/></button>
                 {
                     data.map((items) => 
-                        <List key={items.id} name={items.section} items={items.items} idSection={items.id}
+                        <List key={items._id} name={items.section} items={items.items} idSection={items._id}
                             changeNameItem={this.props.changeNameItem} changeNameSection={this.props.changeNameSection}
                             addItem={this.props.addItem} deleteSection={this.props.deleteSection}
                             deleteItem={this.props.deleteItem}/>          
                     )
                 }
-                <NewSummary id={id} addSection={this.props.addSection}/>  
+                <NewSummary addSection={this.props.addSection}/>  
             </section>
         );
     }

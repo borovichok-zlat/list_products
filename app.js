@@ -135,7 +135,7 @@ app.post("/api/addSection", jsonParser, function (req, res) {
     const id = req.body.id;    
     const section = req.body.section;
     const items = req.body.items;
-    const newSection = {id: id, section: section, items: items};
+    const newSection = {section: section, items: items};
     
     const collection = req.app.locals.collection;
     collection.insertOne(newSection, function(err, result){

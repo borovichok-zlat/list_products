@@ -218,7 +218,7 @@ class Main extends React.Component {
                 const items = this.props.data[i].items;
                 if (items[j].isSelected === true) {
                     products.push({id: items[j].id, name: items[j].name, amount: items[j].amount, note: items[j].note,
-                                   idSection: this.props.data[i].id});
+                                   idSection: this.props.data[i]._id});
                 }
             }
         }

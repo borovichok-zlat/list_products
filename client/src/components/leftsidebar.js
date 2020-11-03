@@ -74,7 +74,7 @@ class Leftsidebar extends React.Component {
                 <button className="editorListBtn" onClick={this.handleClick}><img src={editorIcon} className="icon" alt=""/></button>
                 {
                     data.map((products) => 
-                        <List key={products.id} name={products.section} items={products.items} idSection={products.id}
+                        <List key={products._id} name={products.section} items={products.items} idSection={products._id}
                               handleInputChange={this.props.handleInputChange}/>
                     )
                 }
