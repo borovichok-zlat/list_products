@@ -56,17 +56,13 @@ body {
     font: var(--font-style);
 }
 
-/*переделать сетку*/
-/*боковую панель и список с продуктами жесткой шириной задавать*/
-/*найти как будет работь при закрытии и раскрытии тогда все это*/
 .divRoot {
     display: grid;
     grid-template-areas: 
-    "sidebar menu menu"
-    "sidebar main main"
-    "sidebar main main";
-    grid-template-rows: 50px 1fr 1fr;  
-    grid-template-columns: 270px 1fr 1fr;
+    "menu menu"
+    "sidebar main";
+    grid-template-rows: 60px 1fr;  
+    grid-template-columns: 270px 1fr;
     grid-row-gap: 0px;
     grid-column-gap: 0px;
     height: 100vh;
@@ -89,7 +85,6 @@ body {
     background: rgba(125,108,108,0.3);
 }
 
-/*menuBtn - полностью удалиться, т.к. эти кнопки уйдут в боковую скрывающуюяся панель*/
 .menuBtn, .editorListBtn {
     outline: none !important;
     border: none !important;
@@ -108,12 +103,29 @@ body {
     flex-wrap: wrap;
     background: #A2035A;
     box-shadow: 0px 2px 4px 0px rgba(125,108,108,0.7);
+    align-items: center
+}
+
+.menuHeading {
+    margin-left: 75px;
+    margin-right: 70px;
+    font: 30px Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
 }
 
 .menuBtn {
-    margin: 5px;
     font: var(--font-style);
-    text-align: center;
+    color: white;
+}
+
+.menuBtn:hover {
+    text-decoration: underline;
+}
+
+.menuBtn:active {
+    color: #DADAF8;
+    font: 16px Helvetica, sans-serif;
 }
 
 /*------------------------*/
