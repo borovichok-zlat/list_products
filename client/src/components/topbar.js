@@ -33,6 +33,7 @@ class Topbar extends React.Component {
     render() {
         return (
             <section className="menu">
+                <h1 className="menuHeading">Мои покупки</h1>
                 <button className="menuBtn">создать список</button>
                 <button className="menuBtn">открыть</button>
                 <button className="menuBtn">сохранить</button>
