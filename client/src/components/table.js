@@ -16,8 +16,14 @@ function handleClick(type, view, callback, className, ...args) {
     
     input.onblur = () => {
         input.replaceWith(view);
-        view.innerHTML = input.value;
-        callback(...args, input.value);
+        if (args.length != 0) {
+            callback(...args, input.value);
+        } else {
+            if (input.value.trim()) {
+                callback(input.value);
+            }
+        }
+        
     };
 
     view.replaceWith(input);
@@ -216,7 +222,7 @@ class Main extends React.Component {
     
     handleChangeNameTable(event) {
         let target = event.target;
-        handleClick('text', target, this.props.changeNameTable, "tableInputNameTable", this.props.nameTable);
+        handleClick('text', target, this.props.changeNameTable, "tableInputNameTable");
     }
     
     render() {
