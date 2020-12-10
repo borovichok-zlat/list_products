@@ -19,13 +19,11 @@ class CheckBox extends React.Component {
     
     render() {
         return (
-            <div className="divCheckboxes">
-                <label className="labelCheckbox">
-                    <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
-                        onChange={this.handleInputChange} data-name={this.props.name} data-idsection={this.props.idSection}/>
-                    <div className="checkbox_text">{this.props.name}</div>
-                </label>
-            </div>
+            <label className="labelCheckbox">
+                <input type="checkbox" name="selectedProduct" id={this.props.id} checked={this.props.isSelected}
+                    onChange={this.handleInputChange} data-name={this.props.name} data-idsection={this.props.idSection}/>
+                <div className="checkbox_text">{this.props.name}</div>
+            </label>
         );
     }
 }

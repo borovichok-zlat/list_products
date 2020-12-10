@@ -46,19 +46,23 @@ table {
 }
 /*--------------------------------*/
 
+:root {
+    --border-style: 1px solid #ccc;
+    --background-hover: rgba(125,108,108,0.1); 
+    --font-style: 16px Helvetica, sans-serif; 
+}
+
 body { 
-    background: linear-gradient(160deg, white, 60%, #98e8e5);
-    font: 16px Helvetica, sans-serif;
+    font: var(--font-style);
 }
 
 .divRoot {
     display: grid;
     grid-template-areas: 
-    "sidebar menu menu"
-    "sidebar main main"
-    "sidebar main main";
-    grid-template-rows: 50px 1fr 1fr;  
-    grid-template-columns: 0.8fr 1fr 1fr;
+    "menu menu"
+    "sidebar main";
+    grid-template-rows: 60px 1fr;  
+    grid-template-columns: 270px 1fr;
     grid-row-gap: 0px;
     grid-column-gap: 0px;
     height: 100vh;
@@ -67,32 +71,28 @@ body {
 
 /*scroll*/
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
     background-color: #F5F5F5;
-    border-radius: 6px;
 }
-::-webkit-scrollbar {
+::-webkit-scrollbar { 
     width: 6px;
+    height: 6px;
     background-color: #F5F5F5;
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 6px;
-    background-image: -webkit-gradient(linear,
-                                       left bottom,
-                                       left top,
-                                       color-stop(0.44, #94bed6),
-                                       color-stop(0.86, #76b3e8));
+    width: 6px;
+    height: 6px;
+    background: rgba(125,108,108,0.3);
 }
 
 .menuBtn, .editorListBtn {
     outline: none !important;
     border: none !important;
     background-color: transparent;
-    border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);  
 }
-.menuBtn:active, .editorListBtn:active {
-    box-shadow: 0 1px 5px rgba(0, 0, 0, .6);
+
+.editorListBtn:hover {
+    background: rgba(125,108,108,0.1);
 }
 
 /*------------------------*/
@@ -101,50 +101,107 @@ body {
     grid-area: menu;
     display: flex;
     flex-wrap: wrap;
+    background: #A2035A;
+    box-shadow: 0px 2px 4px 0px rgba(125,108,108,0.7);
+    align-items: center
+}
+
+.menuHeading {
+    margin-left: 75px;
+    margin-right: 70px;
+    font: 30px Helvetica, sans-serif;
+    font-weight: bold;
+    color: white;
 }
 
 .menuBtn {
-    margin: 5px;
+    font: var(--font-style);
+    color: white;
+}
+
+.menuBtn:hover {
+    text-decoration: underline;
+}
+
+.menuBtn:active {
+    color: #DADAF8;
     font: 16px Helvetica, sans-serif;
-    text-align: center;
 }
 
 /*------------------------*/
 
 .main { 
+    position: relative;
     grid-area: main; 
     text-align: center;
-    font: 16px Helvetica, sans-serif;
+    font: var(--font-style);
     overflow-y: auto;
     margin: 10px;
 }
 
+.boxShadow {
+    position: absolute;
+    left: 5px;
+    display: inline-block;
+    box-shadow: 0px 2px 4px 0px rgba(125,108,108,0.7);
+}
+
 .table {
     position: relative;
-    margin: 0 5px;
-    border: 1px solid #59a5e6;
-}
-.table td, .table th, .table caption {
-    border: 1px solid #59a5e6;
-    vertical-align: middle;
-    padding: 3px;
+    border-collapse: collapse;
+    margin: 15px;
+    text-align: left;
+    
 }
 
-.table td {
-    width: 150px;
+.table tr {
+   border-bottom: var(--border-style); 
+}
+.table tr:hover td {
+    background: var(--background-hover);
 }
 
-.table caption {
-    border-bottom: transparent;
+.table td:first-child, .table th:first-child {
+    width: 120px;
+}
+
+.table td, table th {
+    width: 160px;
+    padding-bottom: 3px;
+}
+.table td:last-child, .table th:last-child {
+    text-align: center;
+    width: 50px;
 }
 
 .tableInput {
     position: relative;
+    bottom: 2px;
     outline: none !important;
-    border: 1px solid #59a5e6;
-    margin: 6px 0 0;
+    border: var(--border-style);
     width: 140px;
-    font: 16px Helvetica, sans-serif;
+    font: var(--font-style);
+    display: block;
+}
+
+.tableName {
+    position: relative;
+    left: 25px;
+    font: 24px Helvetica, sans-serif;
+    color: #A2035A;
+    text-align: left;
+    padding: 2px;
+}
+
+.tableInputNameTable {
+    position: relative; 
+    display: block;
+    outline: none !important;
+    border: var(--border-style); 
+    left: 24px;
+    font: 24px Helvetica, sans-serif;
+    color: #A2035A;
+    text-align: left;
 }
 
 /*------------------------*/
@@ -152,7 +209,8 @@ body {
     grid-area: sidebar; 
     overflow: auto;
     position: relative;
-    margin-bottom: 10px;
+    margin: 2px 0;
+    border-right: var(--border-style);
 }
 
 /* accordeon */
@@ -164,10 +222,9 @@ details {
 details summary {
     display: block;
     outline-style: none;
-    border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
-    margin: 0 5px 8px;
-    padding: 0.5em;
+    margin-left: 10px;
+    padding: 0.5em; 
+    border-bottom: var(--border-style);
 }
 details summary::-webkit-details-marker {
     display: none;
@@ -179,15 +236,18 @@ details[open] summary::before {
     content: "- ";
 }
 details summary:hover, .labelCheckbox:hover, .editDiv:hover {
-    background: #bef1ef;
+    background: var(--background-hover);
 }
 
 .divCheckboxes {
-    margin: 5px 8px 10px;
+    margin: 5px 8px 0 8px;
 }
 
 .labelCheckbox {
     display: block;
+    margin-left: 25px;
+    padding-top: 4px;
+    padding-bottom: 5px;
 }
 
 input[type="checkbox"] { display: none; }
@@ -195,13 +255,11 @@ input[type="checkbox"] { display: none; }
 .checkbox_text {
     display: block;
     position: relative;
-    padding-left: 35px;
-    margin-bottom: 20px;
+    padding-left: 28px;
     cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    margin-bottom: 10px;
 }
 
 .checkbox_text:after {
@@ -209,7 +267,7 @@ input[type="checkbox"] { display: none; }
     display: block;
     width: 14px;
     height: 14px;
-    border: 2px solid #6cc0e5;
+    border: 2px solid #8C8C8C;
     position: absolute;
     left: 0;
     top: 0;
@@ -220,7 +278,7 @@ input[type="checkbox"] { display: none; }
     height: 17px;
     top: -7px;
     left: 5px;
-    border: 2px solid #6cc0e5;
+    border: 2px solid #8C8C8C;
     border-top-color: transparent;
     border-left-color: transparent;
     -webkit-transform: rotate(45deg);
@@ -231,9 +289,7 @@ input[type="checkbox"] { display: none; }
     position: relative;
     top: 37px;
     outline-style: none;
-    border-radius: 5px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, .4);
-    margin: 0 5px 8px;
+    margin-left: 10px;
     padding: 0.5em;
 }
 
@@ -257,27 +313,22 @@ input[type="checkbox"] { display: none; }
 .editDiv {
     display: grid;
     grid-template-columns: 1fr 30px;
-    margin-top: 13px;
-    border: 1px solid black;
+    margin-left: 25px;
 }
 
-.editSummary, .editElement {
-    border: 1px solid #59a5e6;
-    padding: 3px;  
-}
 .editSummary {
     display: inline-block;
     min-width: 80%;
 }
 .editElement {
     width: 80%;
-    margin: 3px;
+    padding: 3px;
 }
 
 .deleteBtnSummary {
     position: absolute;
     top: 9px;
-    right: 10px;
+    right: 14px;
 }
 .deleteBtn {
     margin-top: 3px;
@@ -285,35 +336,34 @@ input[type="checkbox"] { display: none; }
 .deleteBtnSummary, .deleteBtn {
     outline: none !important;
     background-color: transparent;
-    border-radius: 5px;
-    border: 1px solid #59a5e6;
+    border: transparent;
     width: 24px;
     height: 24px;
 }
 .deleteBtn:active, .deleteBtnSummary:active {
-    border: 2px solid #59a5e6;
+    border: transparent;
 }
 .deleteBtnTable {
     width: 28px;
     height: 28px;
     padding-left: 8px;
     margin-top: 0px;
+    border: transparent;
+}
+.deleteBtnTable:active { 
+    border: transparent;
 }
 .inputElement {
     outline: none !important;
-    border: 1px solid #59a5e6;
-    padding: 3px;
-    width: 80%;
-    margin: 3px;
-    font: 16px Helvetica, sans-serif;
+    border: var(--border-style);
+    font: var(--font-style);
 }
 /*------------------------*/
-
 @media print {
   * {
     display: none;
   }
   #printableTable {
     display: block;
-  }
+  }    
 }

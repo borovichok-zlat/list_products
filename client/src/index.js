@@ -24,6 +24,7 @@ class App extends React.Component {
         this.changeNameSection = this.changeNameSection.bind(this);
         this.addSection = this.addSection.bind(this);
         this.deleteSection = this.deleteSection.bind(this);
+        this.clearTable = this.clearTable.bind(this);
     }
     
     componentDidMount() {
@@ -170,7 +171,7 @@ class App extends React.Component {
             }
         }
     }
-    
+        
     // меняем название секции
     changeNameSection(id, name) {
         let i;
@@ -231,12 +232,21 @@ class App extends React.Component {
             return {list};
         });
     }
+    
+    // очиска списка
+    clearTable() {
+        fetch("api/clearTable")
+            .then(response => response.json())
+            .then(list => {
+                this.setState({list: [...list]});
+            });
+    }
    
     render() {
         if (this.state.list.length !== 0) {
             return (
                 <div className="divRoot">    
-                    <Topbar/>
+                    <Topbar clearTable={this.clearTable}/>
                     <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
                                 changeAmount={this.changeAmount}/>
                     {

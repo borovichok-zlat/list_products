@@ -4,10 +4,10 @@ import '../styles/index.css';
 import deleteIcon from '../styles/img/delete2.png';
 
 //---- input ----//
-function handleClick(type, view, callback, ...args) {
+function handleClick(type, view, callback, className, ...args) {
     let input = document.createElement("input");
     input.type = type;
-    input.className = "tableInput";
+    input.className = className;
     if (type === 'number') {
         input.defaultValue = "1";
         input.min = "1";
@@ -16,8 +16,9 @@ function handleClick(type, view, callback, ...args) {
     
     input.onblur = () => {
         input.replaceWith(view);
-        view.innerHTML = input.value;
-        callback(...args, input.value);
+        if (input.value.trim()) {
+            callback(...args, input.value);
+        }
     };
 
     view.replaceWith(input);
@@ -25,18 +26,11 @@ function handleClick(type, view, callback, ...args) {
 }
 
 class OneColumn extends React.Component {
-    /*
-    constructor(props) {
-        super(props);
-    }
-    */
-
     render() {
         return (
             <table className="table">
-                <caption>Список покупок</caption>
                 <tbody>
-                    <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
+                    <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th></th></tr>
                     {
                         this.props.products.map((product) => {
                             return (
@@ -74,11 +68,10 @@ class TwoColumns extends React.Component {
     render() {
         return (
             <table className="table">
-                <caption>Список покупок</caption>
                 <tbody>
                     <tr>
-                        <th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th>
-                        <th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th>
+                        <th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th></th>
+                        <th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th></th>
                     </tr>
                     {
                         this.props.products.map((product) => {
@@ -155,14 +148,14 @@ class Table extends React.Component {
         let target = event.target;
         let idproduct = target.dataset.idproduct;
         let idsection = target.dataset.idsection;
-        handleClick('number', target, this.props.changeAmount, idproduct, idsection);
+        handleClick('number', target, this.props.changeAmount, "tableInput", idproduct, idsection);
     }
     
     handleChangeNote(event) {
         let target = event.target;
         let idproduct = target.dataset.idproduct;
         let idsection = target.dataset.idsection;
-        handleClick('text', target, this.props.changeNote, idproduct, idsection);
+        handleClick('text', target, this.props.changeNote, "tableInput", idproduct, idsection);
     }
     
     handleClick(event) {
@@ -188,20 +181,19 @@ class Table extends React.Component {
         if (this.props.products.length > 0) {
             if (this.props.products.length <= 10) {
                 return (
-                    <OneColumn products={this.props.products} handleChangeNote={this.handleChangeNote}
-                        handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>    
+                    <OneColumn nameTable={this.props.nameTable} products={this.props.products} handleChangeNote={this.handleChangeNote}               handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>    
                 );
             } else {
                 return (
-                    <TwoColumns products={products} handleChangeNote={this.handleChangeNote} handleChangeAmount={this.handleChangeAmount}           handleClick={this.handleClick}/>
+                    <TwoColumns nameTable={this.props.nameTable} products={products} handleChangeNote={this.handleChangeNote} 
+                        handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>
                 );
             }
         } else {
             return (
                 <table className="table">
-                    <caption>Список покупок</caption>
                     <tbody>
-                        <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th>Удалить</th></tr>
+                        <tr><th>Продукт</th><th>Количество (шт, кг)</th><th>Примечания</th><th></th></tr>
                     </tbody>  
                 </table>
             );
@@ -224,9 +216,11 @@ class Main extends React.Component {
         }
 
         return (
-            <section className="main" id="printableTable">
-                <Table products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} 
-                        changeAmount={this.props.changeAmount}/>    
+            <section className="main">
+                <div id="printTable" className="boxShadow">
+                    <p className="tableName">Список покупок</p>
+                    <Table nameTable={this.props.nameTable} products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount} changeNameTable={this.props.changeNameTable}/> 
+                </div>
             </section>
         );
     }

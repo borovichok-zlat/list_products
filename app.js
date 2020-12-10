@@ -13,7 +13,7 @@ app.use(express.static(__dirname + "/client"));
  
 mongoClient.connect(function(err, client){
     if(err) return console.log(err);
-    dbClient = client;
+    dbClient = client.db("list_products");
     app.locals.collection = client.db("list_products").collection("every_day");
     
     /*
@@ -154,3 +154,33 @@ app.delete("/api/section/:_id", function(req, res) {
         res.send(section.value);
     });    
 });
+
+/*очистка таблицы с продуктами*/ 
+app.get("/api/clearTable", function(req, res) {
+    const collection = req.app.locals.collection;
+    const name = {};
+    const updateDoc = {$set: {"items.$[orderItem].isSelected": false, "items.$[orderItem].note": "", "items.$[orderItem].amount": 1}};
+    const options = {
+      arrayFilters: [{
+        "orderItem.isSelected": true
+      }]
+    };
+    
+    collection.updateMany(name, updateDoc, options, 
+        function(err, result) {
+            if(err) return console.log(err);
+            collection.find().toArray(function(err, result) {
+                res.send(result);
+            });
+        });
+});
+
+/*
+app.get("/api/list", function(req, res) {
+    const collection = req.app.locals.collection;
+    collection.find().toArray(function(err, list) {
+       if(err) return console.log(err);
+       res.send(list);                       
+    });
+});
+*/
