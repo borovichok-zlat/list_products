@@ -16,14 +16,9 @@ function handleClick(type, view, callback, className, ...args) {
     
     input.onblur = () => {
         input.replaceWith(view);
-        if (args.length != 0) {
+        if (input.value.trim()) {
             callback(...args, input.value);
-        } else {
-            if (input.value.trim()) {
-                callback(input.value);
-            }
         }
-        
     };
 
     view.replaceWith(input);
@@ -31,12 +26,6 @@ function handleClick(type, view, callback, className, ...args) {
 }
 
 class OneColumn extends React.Component {
-    /*
-    constructor(props) {
-        super(props);
-    }
-    */
-
     render() {
         return (
             <table className="table">
@@ -214,17 +203,6 @@ class Table extends React.Component {
 }
 
 class Main extends React.Component {
-    constructor(props) {
-        super(props);
-        
-        this.handleChangeNameTable = this.handleChangeNameTable.bind(this);
-    }
-    
-    handleChangeNameTable(event) {
-        let target = event.target;
-        handleClick('text', target, this.props.changeNameTable, "tableInputNameTable");
-    }
-    
     render() {
         let products = [];
         for (let i = 0; i < this.props.data.length; i++) {
@@ -238,9 +216,9 @@ class Main extends React.Component {
         }
 
         return (
-            <section className="main" id="printableTable">
-                <div className="boxShadow">
-                    <p className="tableName" onClick={this.handleChangeNameTable}>{this.props.nameTable}</p>
+            <section className="main">
+                <div id="printTable" className="boxShadow">
+                    <p className="tableName">Список покупок</p>
                     <Table nameTable={this.props.nameTable} products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount} changeNameTable={this.props.changeNameTable}/> 
                 </div>
             </section>
