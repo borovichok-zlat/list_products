@@ -161,11 +161,15 @@ body {
     background: var(--background-hover);
 }
 
-.table td {
-    width: 150px;
+.table td:first-child, .table th:first-child {
+    width: 120px;
+}
+
+.table td, table th {
+    width: 160px;
     padding-bottom: 3px;
 }
-.table td:last-child {
+.table td:last-child, .table th:last-child {
     text-align: center;
     width: 50px;
 }
@@ -355,12 +359,11 @@ input[type="checkbox"] { display: none; }
     font: var(--font-style);
 }
 /*------------------------*/
-
 @media print {
   * {
     display: none;
   }
   #printableTable {
     display: block;
-  }
+  }    
 }
