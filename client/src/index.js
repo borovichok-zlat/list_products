@@ -10,7 +10,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         
-        this.state = {list: [], hideEditor: true, idTable: '0123', nameTable: 'Список покупок'};
+        this.state = {list: [], hideEditor: true};
         
         
         this.handleClickHideEditor = this.handleClickHideEditor.bind(this);
@@ -24,7 +24,7 @@ class App extends React.Component {
         this.changeNameSection = this.changeNameSection.bind(this);
         this.addSection = this.addSection.bind(this);
         this.deleteSection = this.deleteSection.bind(this);
-        this.changeNameTable = this.changeNameTable.bind(this);
+        this.clearTable = this.clearTable.bind(this);
     }
     
     componentDidMount() {
@@ -171,12 +171,7 @@ class App extends React.Component {
             }
         }
     }
-    
-    // изменяем название таблицы
-    changeNameTable(value) {
-        this.setState({nameTable: value});
-    }
-    
+        
     // меняем название секции
     changeNameSection(id, name) {
         let i;
@@ -237,14 +232,23 @@ class App extends React.Component {
             return {list};
         });
     }
+    
+    // очиска списка
+    clearTable() {
+        fetch("api/clearTable")
+            .then(response => response.json())
+            .then(list => {
+                this.setState({list: [...list]});
+            });
+    }
    
     render() {
         if (this.state.list.length !== 0) {
             return (
                 <div className="divRoot">    
-                    <Topbar/>
-                    <Main nameTable={this.state.nameTable} data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
-                                changeAmount={this.changeAmount} changeNameTable={this.changeNameTable}/>
+                    <Topbar clearTable={this.clearTable}/>
+                    <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
+                                changeAmount={this.changeAmount}/>
                     {
                         this.state.hideEditor ? (
                             <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
