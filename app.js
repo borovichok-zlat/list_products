@@ -15,37 +15,11 @@ mongoClient.connect(function(err, client){
     if(err) return console.log(err);
     dbClient = client.db("list_products");
     app.locals.collection = client.db("list_products").collection("every_day");
-    
-    /*
-    // возвращаем данные о коллекциях
-    client.db("list_products").listCollections().toArray(function (err, collectionInfos) {
-        console.log(collectionInfos);
-    });
-    */
-    
+   
     app.listen(3000, function(){
         console.log("Сервер ожидает подключения...");
     });
 });
-
-/*process.on("SIGINT", () => {
-    dbClient.close();
-    process.exit();
-});*/
-
-
-/*получение всех названий коллекций*/
-/*
-app.get("/api/names_collections", function(req, res){
-    dbClient.db("list_products").listCollections().toArray(function (err, collectionInfos) {
-        if(err) return console.log(err);
-        
-        // возвращаем имена коллекций
-        const names = collectionInfos.map(item => item.name);
-        res.send(names);
-    });
-});
-*/
 
 /*получение данных из коллекции по-умолчанию (every_day)*/
 app.get("/api/list", function(req, res) {
@@ -174,13 +148,3 @@ app.get("/api/clearTable", function(req, res) {
             });
         });
 });
-
-/*
-app.get("/api/list", function(req, res) {
-    const collection = req.app.locals.collection;
-    collection.find().toArray(function(err, list) {
-       if(err) return console.log(err);
-       res.send(list);                       
-    });
-});
-*/

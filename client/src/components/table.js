@@ -25,6 +25,40 @@ function handleClick(type, view, callback, className, ...args) {
     input.focus();
 }
 
+class Tds extends React.Component {
+    render() {
+        return (
+            <React.Fragment>
+                <td></td><td></td><td></td><td></td>
+            </React.Fragment>
+        );
+    }
+}
+class Tr extends React.Component {
+    render() {
+        let num = this.props.num;
+        let product = this.props.product;
+        return (
+            <tr>
+                <td>{product.name}</td>
+                <td onClick={this.props.handleChangeAmount} data-idproduct={product.id} 
+                    data-idsection={product.idSection}>       {product.amount}
+                </td>
+                <td onClick={this.props.handleChangeNote} data-idproduct={product.id} 
+                    data-idsection={product.idSection}>         {product.note}
+                </td>
+                <td>
+                    <button className="deleteBtn deleteBtnTable" onClick={this.props.handleClick} 
+                        data-idproduct={product.id} data-idsection={product.idSection}>
+                        <img src={deleteIcon} className="deleteIcon" alt=""/>
+                    </button>
+                </td>
+                {num && <Tds/>}
+            </tr>
+        );
+    }
+}
+
 class OneColumn extends React.Component {
     render() {
         return (
@@ -34,21 +68,8 @@ class OneColumn extends React.Component {
                     {
                         this.props.products.map((product) => {
                             return (
-                                <tr key={product.id}>
-                                    <td>{product.name}</td>
-                                    <td onClick={this.props.handleChangeAmount} data-idproduct={product.id} 
-                                        data-idsection={product.idSection}>       {product.amount}
-                                    </td>
-                                    <td onClick={this.props.handleChangeNote} data-idproduct={product.id} 
-                                        data-idsection={product.idSection}>         {product.note}
-                                    </td>
-                                    <td>
-                                        <button className="deleteBtn deleteBtnTable" onClick={this.props.handleClick} 
-                                            data-idproduct={product.id} data-idsection={product.idSection}>
-                                            <img src={deleteIcon} className="deleteIcon" alt=""/>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <Tr key={product.id} product={product} handleChangeNote={this.handleChangeNote} 
+                                    handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick} num = {false}/>
                             );
                         })
                     }
@@ -58,13 +79,7 @@ class OneColumn extends React.Component {
     } 
 }
 
-class TwoColumns extends React.Component {
-    /*
-    constructor(props) {
-        super(props);
-    }
-    */
-    
+class TwoColumns extends React.Component {    
     render() {
         return (
             <table className="table">
@@ -108,22 +123,8 @@ class TwoColumns extends React.Component {
                                 );
                             } else if (product.length === 1) {
                                 return (
-                                    <tr key={product[0].id}>
-                                        <td>{product[0].name}</td>
-                                        <td onClick={this.props.handleChangeAmount} data-idproduct={product[0].id} 
-                                            data-idsection={product[0].idSection}>       {product[0].amount}
-                                        </td>
-                                        <td onClick={this.props.handleChangeNote} data-idproduct={product[0].id} 
-                                            data-idsection={product[0].idSection}>         {product[0].note}
-                                        </td>
-                                        <td>
-                                            <button className="deleteBtn deleteBtnTable" onClick={this.props.handleClick} 
-                                                data-idproduct={product[0].id} data-idsection={product[0].idSection}>
-                                                <img src={deleteIcon} className="deleteIcon" alt=""/>
-                                            </button>
-                                        </td>
-                                        <td></td><td></td><td></td><td></td>
-                                    </tr>
+                                    <Tr key={product[0].id} product={product[0]} handleChangeNote={this.handleChangeNote} 
+                                        handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick} num={true}/>
                                 );
                             }
                         })
@@ -181,11 +182,12 @@ class Table extends React.Component {
         if (this.props.products.length > 0) {
             if (this.props.products.length <= 10) {
                 return (
-                    <OneColumn nameTable={this.props.nameTable} products={this.props.products} handleChangeNote={this.handleChangeNote}               handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>    
+                    <OneColumn products={this.props.products} handleChangeNote={this.handleChangeNote} 
+                        handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>    
                 );
             } else {
                 return (
-                    <TwoColumns nameTable={this.props.nameTable} products={products} handleChangeNote={this.handleChangeNote} 
+                    <TwoColumns products={products} handleChangeNote={this.handleChangeNote} 
                         handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick}/>
                 );
             }
@@ -219,7 +221,7 @@ class Main extends React.Component {
             <section className="main">
                 <div id="printTable" className="boxShadow">
                     <p className="tableName">Список покупок</p>
-                    <Table nameTable={this.props.nameTable} products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount} changeNameTable={this.props.changeNameTable}/> 
+                    <Table products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount} changeNameTable={this.props.changeNameTable}/> 
                 </div>
             </section>
         );

@@ -12,7 +12,6 @@ class Topbar extends React.Component {
     handleClickPrint(event) {
         let table = document.getElementById("printTable");
         let table_clone = table.cloneNode(true);
-        //table_clone.children[1].border = "1px solid black;";
         table_clone.children[1].style.cssText = "border-collapse: collapse;";
         let rows = table_clone.getElementsByTagName("tr");
                 
