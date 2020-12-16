@@ -28,18 +28,20 @@ class App extends React.Component {
     }
     
     componentDidMount() {
+        document.title = "Мои покупки";
+        
         // получение данных из коллекции every_day
         fetch("api/list")
         .then(response => response.json())
         .then(list => {
           this.setState({list: [...list]});
         });
-    }
-    
-    componentWillUnmount() {
         
+        window.addEventListener("unload", function() {
+            console.log('unload');
+        });
     }
-        
+            
     // скрыть-показать редактор
     handleClickHideEditor(value) {
         this.setState({hideEditor: value});
@@ -62,7 +64,7 @@ class App extends React.Component {
                             selectedItem = {id: item.id, name: name, isSelected: item.isSelected, note: item.note, amount: item.amount};
                         } else if (note !== null) {
                             selectedItem = {id: item.id, name: item.name, isSelected: item.isSelected, note: note, amount: item.amount}; 
-                        } else {
+                        } else if (amount != null) {
                             selectedItem = {id: item.id, name: item.name, isSelected: item.isSelected, note: item.note, amount: amount}; 
                         }
 
@@ -164,6 +166,7 @@ class App extends React.Component {
                             this.setState({list: [...list]});
                         })
                         .catch(err => console.log(err + " deleteItem"));
+                        
                         break;
                     }
                 }
@@ -212,7 +215,8 @@ class App extends React.Component {
         .then(response => response.json())
         .then(section => {
             this.setState({list: [...this.state.list, section]});
-        });
+        })
+        .catch(err => console.log(err + " addSection"));
     }
     
     // удаление раздела
@@ -236,40 +240,32 @@ class App extends React.Component {
     // очиска списка
     clearTable() {
         fetch("api/clearTable")
-            .then(response => response.json())
-            .then(list => {
-                this.setState({list: [...list]});
-            });
+        .then(response => response.json())
+        .then(list => {
+            this.setState({list: [...list]});
+        })
+        .catch(err => console.log(err + " clearTable"));
     }
    
     render() {
-        if (this.state.list.length !== 0) {
-            return (
-                <div className="divRoot">    
-                    <Topbar clearTable={this.clearTable}/>
-                    <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
-                                changeAmount={this.changeAmount}/>
-                    {
-                        this.state.hideEditor ? (
-                            <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
-                                handleInputChange={this.changeSelection}/>
-                        ) : (
-                            <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
-                                changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
-                                addItem={this.addItem} addSection={this.addSection}
-                                deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
-                        )
-                    }              
-                </div>    
-            );
-        } else {
-            return (
-                <div className="divRoot">    
-                    <Topbar/> 
-                </div>
-            );
-        }
-        
+        return (
+            <div className="divRoot">    
+                <Topbar clearTable={this.clearTable}/>
+                <Main data={this.state.list} handleClick={this.changeSelection} changeNote={this.changeNote} 
+                            changeAmount={this.changeAmount}/>
+                {
+                    this.state.hideEditor ? (
+                        <Leftsidebar data={this.state.list}  handleClick={this.handleClickHideEditor} 
+                            handleInputChange={this.changeSelection}/>
+                    ) : (
+                        <EditorLeftsidebar data={this.state.list} handleClick={this.handleClickHideEditor} 
+                            changeNameItem={this.changeNameItem} changeNameSection={this.changeNameSection}
+                            addItem={this.addItem} addSection={this.addSection}
+                            deleteItem={this.deleteItem} deleteSection={this.deleteSection}/>
+                    )
+                }              
+            </div>    
+        );
     }
 }
 

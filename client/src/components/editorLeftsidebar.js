@@ -175,13 +175,7 @@ class NewSummary extends React.Component {
 }
 
 //---- разделы с продуктами ----//
-class List extends React.Component {
-    /*
-    constructor(props) {
-        super(props);
-    }
-    */
-    
+class List extends React.Component {    
     render() {
         const items = this.props.items;
         let num, index, id;
