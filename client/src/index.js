@@ -36,10 +36,6 @@ class App extends React.Component {
         .then(list => {
           this.setState({list: [...list]});
         });
-        
-        window.addEventListener("unload", function() {
-            console.log('unload');
-        });
     }
             
     // скрыть-показать редактор
