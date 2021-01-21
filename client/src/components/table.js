@@ -34,7 +34,7 @@ class Tds extends React.Component {
         );
     }
 }
-class Tr extends React.Component {
+class Tr extends React.Component {    
     render() {
         let num = this.props.num;
         let product = this.props.product;
@@ -68,8 +68,8 @@ class OneColumn extends React.Component {
                     {
                         this.props.products.map((product) => {
                             return (
-                                <Tr key={product.id} product={product} handleChangeNote={this.handleChangeNote} 
-                                    handleChangeAmount={this.handleChangeAmount} handleClick={this.handleClick} num = {false}/>
+                                <Tr key={product.id} product={product} handleChangeNote={this.props.handleChangeNote} 
+                                    handleChangeAmount={this.props.handleChangeAmount} handleClick={this.props.handleClick} num = {false}/>
                             );
                         })
                     }
@@ -221,7 +221,7 @@ class Main extends React.Component {
             <section className="main">
                 <div id="printTable" className="boxShadow">
                     <p className="tableName">Список покупок</p>
-                    <Table products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount} changeNameTable={this.props.changeNameTable}/> 
+                    <Table products={products} handleClick={this.props.handleClick} changeNote={this.props.changeNote} changeAmount={this.props.changeAmount}/> 
                 </div>
             </section>
         );
